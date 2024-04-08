@@ -1,0 +1,58 @@
+body {
+    margin: 0%;
+}
+
+.container {
+    margin: 0%;
+    max-width: 100%;
+    /* padding: 0%; */
+    display: block;
+}
+
+.navbar ul{
+
+  height: 3rem;
+  color: white;
+  list-style-type: none;
+  background-color: rgb(70, 70, 70);
+  /* padding: 0px; */
+  margin: 0px;
+  display: block;
+  text-align: center;
+  display: flex; 
+  justify-content: right;
+  align-items: center;
+}
+
+.navbar ul li a{
+  text-decoration: none;
+  color: #151414;
+
+}
+
+.list{
+
+  padding: .2rem;
+}
+
+.list:hover{
+  border-bottom: .4rem solid #8181a1;
+  border-style: outset;
+}
+
+#cadastro{
+
+  display: block;
+  text-align: center;
+  padding: .3rem;
+ 
+}
+#login{
+
+  display: block;
+  text-align: center;
+  padding: .3rem;
+  
+}
+
+  
