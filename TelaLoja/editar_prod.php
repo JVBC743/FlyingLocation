@@ -228,7 +228,7 @@
 
                         while ($linha = mysqli_fetch_assoc($consulta)){
 
-                            $id = $linha["idProduto"];
+                            $id = $linha["id_produto"];
                             $nome = $linha["nome_produto"];
                             $preco = $linha["preco"];
                             $quant = $linha["quantidade"];

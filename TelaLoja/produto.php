@@ -17,14 +17,14 @@
     $nome_usuario = $_SESSION["nome_usuario"];
 
     $banco = BDAcesso::getInstance();
-    $resultado_cep = $banco->buscaSQL("*", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
+    $resultado_cep = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
 
     if ($resultado_cep && mysqli_num_rows($resultado_cep) > 0) {
 
         $linha = mysqli_fetch_assoc($resultado_cep);
 
-        $cep_pessoa = $linha["cepPessoa"];
-        $casa = $linha["numeracao"];
+        $cep_pessoa = $linha["cep"];
+        $casa = $linha["numero_casa"];
         $cargo = $linha["cargo"];
 
     }
@@ -39,7 +39,6 @@
         if ($resul && mysqli_num_rows($resul) > 0) {
             $linha = mysqli_fetch_assoc($resul);
             $img_prod = $linha["imagem_produto"];
-            $caminho = $linha["caminho"];
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
             
