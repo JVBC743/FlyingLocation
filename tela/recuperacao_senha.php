@@ -58,7 +58,7 @@
             
             $email = $_POST["email"];
 
-            $resultado = $banco_rec->buscaSQL("*","Pessoas", "WHERE", "email = '$email'");
+            $resultado = $banco_rec->buscaSQL("*","usuarios", "WHERE", "email = '$email'");
 
             if($resultado && mysqli_num_rows($resultado)){
 

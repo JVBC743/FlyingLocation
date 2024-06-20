@@ -53,7 +53,7 @@
                 $senha_usuario = $_POST["senha_usuario"];
 
                 $banco = BDAcesso::getInstance();
-                $retorno = $banco->buscaSQL("*","Pessoas", "WHERE", "email = '$email'");
+                $retorno = $banco->buscaSQL("*","usuarios", "WHERE", "email = '$email'");
 
                 if($retorno && mysqli_num_rows($retorno) > 0){
 

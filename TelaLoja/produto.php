@@ -17,7 +17,7 @@
     $nome_usuario = $_SESSION["nome_usuario"];
 
     $banco = BDAcesso::getInstance();
-    $resultado_cep = $banco->buscaSQL("*", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+    $resultado_cep = $banco->buscaSQL("*", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
 
     if ($resultado_cep && mysqli_num_rows($resultado_cep) > 0) {
 
@@ -34,14 +34,14 @@
 
         $nome_produto = $_SESSION['nome_produto'];
 
-        $resul = $banco->buscaSQL("*", "Produtos", "WHERE", "nomeProduto = '$nome_produto'");
+        $resul = $banco->buscaSQL("*", "produtos", "WHERE", "nome_produto = '$nome_produto'");
 
         if ($resul && mysqli_num_rows($resul) > 0) {
             $linha = mysqli_fetch_assoc($resul);
             $img_prod = $linha["imagem_produto"];
             $caminho = $linha["caminho"];
-            $_SESSION["prod_nome"] = $prod_nome = $linha["nomeProduto"];
-            $_SESSION["prod_preco"] = $prod_preco = $linha["precoProduto"];
+            $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
+            $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
             
 
         }
@@ -122,7 +122,7 @@
                         <?php endif;?>  
 
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href = "editar_prod.php">Meus Produtos</a>
+                            <a class="nav-link active" aria-current="page" href = "editar_prod.php">Meus produtos</a>
                         </li>
 
                         </ul>
@@ -131,7 +131,7 @@
                             <div class="d-flex" > 
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+                                        <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
                                     </button>
                                     <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                                     <ul class="dropdown-menu">
@@ -163,7 +163,7 @@
 
 
         <h1 style = "margin: 20px; "><?php echo $prod_nome; ?></h1>
-        <img src="../<?php echo $caminho .'/'. $img_prod; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
+        <img src="../assets/img/products/<?php echo $img_prod; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
         <p style = "margin: 30px"><?php echo "Preço: R$" . $prod_preco; ?></p>
 
         <form action = "produto.php" method="post">

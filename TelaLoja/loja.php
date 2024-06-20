@@ -23,7 +23,7 @@
     
     $banco = BDAcesso::getInstance();
     
-    $cons = $banco->buscaSQL("*", "Pessoas", "WHERE", "email = '$email'");
+    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "email = '$email'");
     
     if(mysqli_num_rows($cons) > 0){
         $user_log = mysqli_fetch_assoc($cons);
@@ -35,9 +35,9 @@
 
     $_SESSION["nome_usuario"] = $nome_usuario;
     
-    $cons1 = $banco->buscaSQL("cepPessoa","Pessoas","WHERE","nomePessoa = '$nome_usuario'");
+    $cons1 = $banco->buscaSQL("cepPessoa","usuarios","WHERE","nomePessoa = '$nome_usuario'");
 
-    $cons2 = $banco->buscaSQL("*", "Produtos");
+    $cons2 = $banco->buscaSQL("*", "produtos");
 
 ?>
 
@@ -53,21 +53,21 @@
 <body>
 
 <?php
-function exibirProdutos($consultaSQL)
+function exibirprodutos($consultaSQL)
 {
     if ($consultaSQL) {
         $i = 0;
         while (($linha = mysqli_fetch_assoc($consultaSQL))) {
-            $preco = str_replace(".",",", $linha["precoProduto"]);
+            $preco = str_replace(".",",", $linha["preco"]);
 
 ?>
             <div class="produto col-6 col-md-3 m-3" id="width-20rem">
-                <img class="img-thumbnail" src="../<?php echo $linha["caminho"] . "/" . $linha["imagem_produto"] ?>" alt="Produto 1">
-                <h3><a href="produto.php"><?php echo $linha["nomeProduto"]; ?></a></h3>
+                <img class="img-thumbnail" src="../assets/img/products/<?php echo $linha["imagem_produto"] ?>" alt="Produto 1">
+                <h3><a href="produto.php"><?php echo $linha["nome_produto"]; ?></a></h3>
                 <p class="preco"><?php echo "R$ " . $preco; ?></p>
 
                 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-                    <input type="hidden" name="nome_produto" value="<?php echo $linha["nomeProduto"]; ?>">
+                    <input type="hidden" name="nome_produto" value="<?php echo $linha["nome_produto"]; ?>">
                     <input type="submit" class="botao" value="Comprar Agora" name="comprar<?php echo $i; ?>">
                 </form>                                                         
                 <?php
@@ -133,7 +133,7 @@ function exibirProdutos($consultaSQL)
                     <?php endif;?>  
 
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href = "editar_prod.php">Meus Produtos</a>
+                        <a class="nav-link" aria-current="page" href = "editar_prod.php">Meus produtos</a>
                     </li>
 
                     <?php if($cargo == 'administrador'): ?>
@@ -165,7 +165,7 @@ function exibirProdutos($consultaSQL)
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+                              <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
@@ -207,9 +207,9 @@ function exibirProdutos($consultaSQL)
 
                 $termo_pesquisa = $_GET['termo_pesquisa'];
                 
-                $res_inicio = $banco->buscaSQL("*","Produtos", "WHERE", "nomeProduto LIKE '$termo_pesquisa%'");
+                $res_inicio = $banco->buscaSQL("*","produtos", "WHERE", "nome_produto LIKE '$termo_pesquisa%'");
 
-                $res = $banco->buscaSQL("*", "Produtos", "WHERE", "nomeProduto LIKE '%$termo_pesquisa%' AND nomeProduto NOT LIKE '$termo_pesquisa%'");
+                $res = $banco->buscaSQL("*", "produtos", "WHERE", "nome_produto LIKE '%$termo_pesquisa%' AND nome_produto NOT LIKE '$termo_pesquisa%'");
 
             ?>
         <?php else:$res_inicio = null;
@@ -223,9 +223,9 @@ function exibirProdutos($consultaSQL)
                 <div class="produtos row">
             <?php 
 
-                exibirProdutos($res_inicio);
+                exibirprodutos($res_inicio);
                 if($res && mysqli_num_rows($res) > 0){
-                    exibirProdutos($res);
+                    exibirprodutos($res);
                 }
              ?>
                 </div>
@@ -234,14 +234,14 @@ function exibirProdutos($consultaSQL)
             <div class="container">
                 <div class="produtos row">
                 <?php 
-                    exibirProdutos($res);
+                    exibirprodutos($res);
                 ?>
                 </div>
             </div>
         <?php else:?>
             <div class="container">
                 <div class="produtos row">
-            <?php exibirProdutos($cons2); ?>
+            <?php exibirprodutos($cons2); ?>
                 </div>
             </div>
         <?php endif; ?>

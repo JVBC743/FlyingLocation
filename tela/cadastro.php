@@ -79,13 +79,13 @@
 
                             if(isset($_POST["numeracao_casa"]) && !empty($_POST["numeracao_casa"])){
 
-                                $numeracao = $_POST["numeracao_casa"];
+                                $numero_casa = $_POST["numeracao_casa"];
 
                                 if (preg_match('/^\d{8}$/', $cep_cadastro)) {
 
                                 $token = uniqid();
 
-                                $inserir_usr = $banco->inserirDados("UsuariosTemporarios", "'$nome_cadastro', '$senha_cadastro', '$cep_cadastro', '$numeracao', '$email', NOW() + INTERVAL 1 HOUR", "nomePessoa, senhaPessoa, cepPessoa, numeracao, email, data_expiracao");
+                                $inserir_usr = $banco->inserirDados("UsuariosTemporarios", "'$nome_cadastro', '$senha_cadastro', '$cep_cadastro', '$numero_casa', '$email', NOW() + INTERVAL 1 HOUR", "nome, senha, cep, numero_casa, email, data_expiracao");
 
                                 if($inserir_usr == false){
 

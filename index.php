@@ -9,7 +9,7 @@
 
     $banco = BDAcesso::getInstance();
 
-    $cons2 = $banco->buscaSQL("*", "Produtos");
+    $cons2 = $banco->buscaSQL("*", "produtos");
 
 
 ?>
@@ -43,12 +43,12 @@
 
 ?>
             <div class="produto col-6 col-md-3 m-3" id="width-20rem">
-                <img class="img-thumbnail" src="<?php echo $linha["caminho"] . "/" . $linha["imagem_produto"] ?>" alt="Produto 1">
-                <h3><a href="produto.php"><?php echo $linha["nomeProduto"]; ?></a></h3>
+                <img class="img-thumbnail" src="../assets/img/users/<?php echo $linha["imagem_produto"] ?>" alt="Produto 1">
+                <h3><a href="produto.php"><?php echo $linha["nome_produto"]; ?></a></h3>
                 <p class="preco"><?php echo "R$ " . $preco; ?></p>
 
                 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-                    <input type="hidden" name="nome_produto" value="<?php echo $linha["nomeProduto"]; ?>">
+                    <input type="hidden" name="nome_produto" value="<?php echo $linha["nome_produto"]; ?>">
                     <input type="submit" class="botao" value="Comprar Agora" name="comprar<?php echo $i; ?>">
                     <?php
                         if(isset($_POST["comprar". $i])){
@@ -107,9 +107,9 @@
 
                 $termo_pesquisa = $_GET['termo_pesquisa'];
                 
-                $res_inicio = $banco->buscaSQL("*","Produtos", "WHERE", "nomeProduto LIKE '$termo_pesquisa%'");
+                $res_inicio = $banco->buscaSQL("*","produtos", "WHERE", "nome_produto LIKE '$termo_pesquisa%'");
 
-                $res = $banco->buscaSQL("*", "Produtos", "WHERE", "nomeProduto LIKE '%$termo_pesquisa%' AND nomeProduto NOT LIKE '$termo_pesquisa%'");
+                $res = $banco->buscaSQL("*", "produtos", "WHERE", "nome_produto LIKE '%$termo_pesquisa%' AND nome_produto NOT LIKE '$termo_pesquisa%'");
 
             ?>
         <?php else:$res_inicio = null;

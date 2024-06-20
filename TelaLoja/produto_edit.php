@@ -9,10 +9,10 @@
 
     if(isset($_SESSION["nome_produto"])){
         $nome_produto = $_SESSION["nome_produto"];
-        $respostaSQL = $banco->buscaSQL("*", "Produtos", "WHERE", "nomeProduto = '$nome_produto'");
+        $respostaSQL = $banco->buscaSQL("*", "produtos", "WHERE", "nome_produto = '$nome_produto'");
         if($respostaSQL){
             $dadosProduto = mysqli_fetch_assoc($respostaSQL);
-            list($ano, $mes, $dia) = explode('-', $dadosProduto["dataFabricacao"]);
+            list($ano, $mes, $dia) = explode('-', $dadosProduto["fabricacao"]);
             $data = date('d-m-Y', strtotime("$dia-$mes-$ano"));
             $data = str_replace("-","/", $data);
         }
@@ -43,12 +43,12 @@
 
                 <div class="input-group mb3" id="width-30rem">
                         <span class="input-group-text" id="basic-addon1">Nome</span>
-                        <input type="text" class="form-control" name = "nome_produto" value="<?php echo $dadosProduto['nomeProduto'] ?>" placeholder="Abacate" aria-label="Abacate" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" name = "nome_produto" value="<?php echo $dadosProduto['nome_produto'] ?>" placeholder="Abacate" aria-label="Abacate" aria-describedby="basic-addon1">
                 </div>
                 <br>
                 <div class="input-group mb3" id="width-30rem">
                         <span class="input-group-text" id="basic-addon1">Preço:</span>
-                        <input type="text" class="form-control" name = "preco" value="<?php echo $dadosProduto['precoProduto'] ?>" placeholder="120,20" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" name = "preco" value="<?php echo $dadosProduto['preco'] ?>" placeholder="120,20" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
                 <br>
                 <div class="input-group mb3" id="width-30rem">
@@ -82,7 +82,7 @@
                 </div>
                 <button id="AbrirModal" type = "button" class="btn btn-success">Imagem Atual</button>
                 <dialog id="modal">
-                        <img src="../<?php echo $dadosProduto["caminho"] . $dadosProduto["imagem_produto"] ?>" alt="img1">
+                        <img src="../assets/img/products/<?php echo $dadosProduto["imagem_produto"] ?>" alt="img1">
                         <button type="button" id="FechaModal" >Fechar</button>
                 </dialog>
                 <br>
@@ -142,10 +142,10 @@ logado ao produto.
 
                                     $banco = BDAcesso::getInstance();
 
-                                    $sets = "nomeProduto='$nome', precoProduto=$preco, quantidade=$quant, fornecedor='$fabri', dataFabricacao='$data', garantia=$garan, descricao='$descri'";
-                                    $nomeAntigo = $dadosProduto["nomeProduto"];
+                                    $sets = "nome_produto='$nome', preco=$preco, quantidade=$quant, fornecedor='$fabri', fabricacao='$data', garantia=$garan, descricao='$descri'";
+                                    $nomeAntigo = $dadosProduto["nome_produto"];
 
-                                    $inst = $banco->atualizarDados("Produtos", $sets, "WHERE", "nomeProduto = '$nomeAntigo'");
+                                    $inst = $banco->atualizarDados("produtos", $sets, "WHERE", "nome_produto = '$nomeAntigo'");
                                          
                                     $_SESSION["nome_produto"] = $nome;
 
@@ -192,10 +192,10 @@ logado ao produto.
 
                                         //O "inserirDados()" é do tipo "void", então seria interessante apenas chamar esse método sozinho.
                                         //Sem atribuir à nenhuma variável. Ou, então, aplicar algum retorno à esse método.
-                                        $sets = "nomeProduto='$nome', precoProduto=$preco, quantidade=$quant, fornecedor='$fabri', dataFabricacao='$data', garantia=$garan, descricao='$descri', imagem_produto='$fileName'";
-                                        $nomeAntigo = $dadosProduto["nomeProduto"];
+                                        $sets = "nome_produto='$nome', preco=$preco, quantidade=$quant, fornecedor='$fabri', fabricacao='$data', garantia=$garan, descricao='$descri', imagem_produto='$fileName'";
+                                        $nomeAntigo = $dadosProduto["nome_produto"];
 
-                                        $inst = $banco->atualizarDados("Produtos", $sets, "WHERE", "nomeProduto = '$nomeAntigo'");
+                                        $inst = $banco->atualizarDados("produtos", $sets, "WHERE", "nome_produto = '$nomeAntigo'");
                                             
                                         if(!$inst){
                                             echo "Dados cadastrados com sucesso!";

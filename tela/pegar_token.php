@@ -65,7 +65,7 @@
         header("Location: tela_recuperacao.php");
     }
 
-    $busca_usuario = $banco_rec->buscaSQL("*", "Pessoas", "WHERE", "id = $id_usuario");
+    $busca_usuario = $banco_rec->buscaSQL("*", "usuarios", "WHERE", "id = $id_usuario");
 
     if($busca_usuario && mysqli_num_rows($busca_usuario) > 0){
 

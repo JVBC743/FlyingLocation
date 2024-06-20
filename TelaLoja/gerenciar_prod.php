@@ -13,7 +13,7 @@ else{
 }
 $banco = BDAcesso::getInstance();
 
-$cons = $banco->buscaSQL("*", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+$cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
 
 if(mysqli_num_rows($cons) > 0){
     $user_log = mysqli_fetch_assoc($cons);
@@ -57,7 +57,7 @@ if(mysqli_num_rows($cons) > 0){
                         </li>     
 
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href = "editar_prod.php">Meus Produtos</a>
+                            <a class="nav-link" aria-current="page" href = "editar_prod.php">Meus produtos</a>
                         </li>
 
                         <li class="nav-item">
@@ -84,7 +84,7 @@ if(mysqli_num_rows($cons) > 0){
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+                              <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
@@ -230,7 +230,7 @@ if(mysqli_num_rows($cons) > 0){
                                                 //O "inserirDados()" é do tipo "void", então seria interessante apenas chamar esse método sozinho.
                                                 //Sem atribuir à nenhuma variável. Ou, então, aplicar algum retorno à esse método.
 
-                                                $inst = $banco->inserirDados("Produtos", "'$nome', $preco, $quant, '$fabri', '$data', $garan, '$descri', '$fileName'", "nomeProduto, precoProduto, quantidade, fornecedor, dataFabricacao, garantia, descricao, imagem_produto");
+                                                $inst = $banco->inserirDados("produtos", "'$nome', $preco, $quant, '$fabri', '$data', $garan, '$descri', '$fileName'", "nome_produto, preco, quantidade, fornecedor, fabricacao, garantia, descricao, imagem_produto");
                                                     
                                                 if(!$inst){
                                                     echo "Dados cadastrados com sucesso!";

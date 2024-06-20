@@ -15,7 +15,7 @@
         echo "Error no usuário";
     }
 
-    $cons = $banco->buscaSQL("*", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
     
     if(mysqli_num_rows($cons) > 0){
 
@@ -26,9 +26,9 @@
     }
     
 
-    $busca_cargo = $banco->buscaSQL("cargo", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+    $busca_cargo = $banco->buscaSQL("cargo", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
     
-    $consulta = $banco->buscaSQL("*","Produtos", "WHERE" , "fornecedor = '$nome_usuario'");
+    $consulta = $banco->buscaSQL("*","produtos", "WHERE" , "fornecedor = '$nome_usuario'");
 
     if($consulta && mysqli_num_rows($consulta) > 0){
 
@@ -105,7 +105,7 @@
                     <?php endif;?>  
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href = "editar_prod.php">Meus Produtos</a>
+                        <a class="nav-link active" aria-current="page" href = "editar_prod.php">Meus produtos</a>
                     </li>
 
                     <li class="nav-item">
@@ -133,7 +133,7 @@
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+                              <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
@@ -174,7 +174,7 @@
             
                 if(isset($_POST["tornar_fornecedor"])){
 
-                    $alt_cargo = $banco->atualizarDados("Pessoas", "cargo = 'fornecedor'", "WHERE", "nomePessoa = '$nome_usuario'");
+                    $alt_cargo = $banco->atualizarDados("usuarios", "cargo = 'fornecedor'", "WHERE", "nomePessoa = '$nome_usuario'");
                     sleep(3);
                     header("Location: editar_prod.php");
                 }
@@ -200,11 +200,11 @@
 
                     if($cargo == "fornecedor"){
 
-                        $consulta = $banco->buscaSQL("*","Produtos", "WHERE", "fornecedor = '$nome_usuario'");
+                        $consulta = $banco->buscaSQL("*","produtos", "WHERE", "fornecedor = '$nome_usuario'");
                         
                     }elseif($cargo == "administrador"){
 
-                        $consulta = $banco->buscaSQL("*","Produtos");
+                        $consulta = $banco->buscaSQL("*","produtos");
 
                     }     
                         $i = 0;
@@ -212,10 +212,10 @@
                         while ($linha = mysqli_fetch_assoc($consulta)){
 
                             $id = $linha["idProduto"];
-                            $nome = $linha["nomeProduto"];
-                            $preco = $linha["precoProduto"];
+                            $nome = $linha["nome_produto"];
+                            $preco = $linha["preco"];
                             $quant = $linha["quantidade"];
-                            $data = $linha["dataFabricacao"];
+                            $data = $linha["fabricacao"];
                             $garantia = $linha["garantia"];
                             $desc = $linha["descricao"];
                             $cam = $linha["caminho"];
@@ -250,7 +250,7 @@
                                 </td>
                             </tr>
                             <dialog id="modal<?php echo $i;?>">
-                                <img src="../<?php echo $cam . $img ?>" alt="img">
+                                <img src="../users/img/products/<?php echo $img ?>" alt="img">
                                 <button type="button" id="fecharModal<?php echo $i;?>" >Fechar</button>
                             </dialog>
 
@@ -266,7 +266,7 @@
                                 <?php
                                     if(isset($_POST["excluir_ctz_$i"])){
                                                                             
-                                            $resultado = $banco->excluirDados("Produtos", "WHERE", "nomeProduto = '$nome'");
+                                            $resultado = $banco->excluirDados("produtos", "WHERE", "nome_produto = '$nome'");
 
                                             if($resultado){
 

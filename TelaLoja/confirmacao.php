@@ -17,7 +17,7 @@
     }
 
     $banco = BDAcesso::getInstance();
-    $resultado_cep = $banco->buscaSQL("*", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+    $resultado_cep = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
 
     if ($resultado_cep && mysqli_num_rows($resultado_cep) > 0) {
 
@@ -90,7 +90,7 @@
                             <div class="d-flex" > 
                             <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+                                <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
                             </button>
                             <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                             <ul class="dropdown-menu">

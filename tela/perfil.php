@@ -22,17 +22,16 @@
 
         $editar_usuario = $_SESSION["nome_usuario"];
 
-        $cons = $banco->buscaSQL("*", "Pessoas", "WHERE", "nomePessoa = '$editar_usuario'");
+        $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$editar_usuario'");
     
         if(mysqli_num_rows($cons) > 0){
 
             $linha = mysqli_fetch_assoc($cons);
-            $caminho = $linha["caminho"];
-            $senha = $linha["senhaPessoa"];
+            $senha = $linha["senha"];
             $imagem_pss = $linha["imagem_pessoa"];
             $cargo = $linha["cargo"];
-            $cep = $linha["cepPessoa"];
-            $numero = $linha["numeracao"];
+            $cep = $linha["cep"];
+            $numero = $linha["numero_casa"];
         }
         
     }else{
@@ -44,17 +43,17 @@
 
         $nome_usuario = $_SESSION["nome_usuario"];
 
-        $cons = $banco->buscaSQL("*", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+        $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
     
         if(mysqli_num_rows($cons) > 0){
 
             $linha = mysqli_fetch_assoc($cons);
             $caminho = $linha["caminho"];
-            $senha = $linha["senhaPessoa"];
+            $senha = $linha["senha"];
             $imagem_pss = $linha["imagem_pessoa"];
             $cargo = $linha["cargo"];
-            $cep = $linha["cepPessoa"];
-            $numero = $linha["numeracao"];
+            $cep = $linha["cep"];
+            $numero = $linha["numero_casa"];
         }
         
     }else{
@@ -123,7 +122,14 @@
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+
+
+
+                              <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+
+
+
+
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
@@ -153,7 +159,7 @@
 
             <h1>Perfil de usuário</h1>
 
-            <img src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
+            <img src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
 
             <form action = "perfil.php" method = "post" enctype="multipart/form-data">
 
@@ -205,23 +211,23 @@
 
                         if(isset($_POST["alterar_dados"])){
                             
-                            if(isset($_POST["nome_usuario"]) || isset($_POST["senhaPessoa"])){
+                            if(isset($_POST["nome_usuario"]) || isset($_POST["senha"])){
                                 
                                 $novo_nome = $_POST["nome_usuario"];
 
-                                $res1 = $banco->atualizarDados("Pessoas", "nomePessoa = '$novo_nome'","WHERE", "nomePessoa = '$editar_usuario'");
+                                $res1 = $banco->atualizarDados("usuarios", "nome = '$novo_nome'","WHERE", "nome = '$editar_usuario'");
 
                                 $novo_senha = $_POST["senha_usuario"];
 
-                                $res2 = $banco->atualizarDados("Pessoas", "senhaPessoa = '$novo_senha'","WHERE", "nomePessoa = '$editar_usuario'");
+                                $res2 = $banco->atualizarDados("usuarios", "senha = '$novo_senha'","WHERE", "nome = '$editar_usuario'");
 
                                 $novo_cep = $_POST["cep_usuario"];
 
-                                $res3 = $banco->atualizarDados("Pessoas", "cepPessoa = '$novo_cep'","WHERE", "nomePessoa = '$editar_usuario'");
+                                $res3 = $banco->atualizarDados("usuarios", "cep = '$novo_cep'","WHERE", "nome = '$editar_usuario'");
                                 
                                 $novo_numero = $_POST["numero_casa"];
 
-                                $res4 = $banco->atualizarDados("Pessoas", "numeracao = '$novo_numero'","WHERE", "nomePessoa = '$editar_usuario'");
+                                $res4 = $banco->atualizarDados("usuarios", "numero_casa = '$novo_numero'","WHERE", "nome = '$editar_usuario'");
                                 
                                 if($res1){
                                     
@@ -279,7 +285,7 @@
                                     }
                                 }
         
-                                $att_foto = $banco->atualizarDados("Pessoas", "imagem_pessoa = '$fileName'", "WHERE", "nomePessoa = '$editar_usuario'");
+                                $att_foto = $banco->atualizarDados("usuarios", "imagem_pessoa = '$fileName'", "WHERE", "nome = '$editar_usuario'");
         
                                 if($att_foto){
         
@@ -295,7 +301,7 @@
 
                         if(isset($_POST["excluir_ctz"])){
 
-                            $resp = $banco->excluirDados("Pessoas", "WHERE", "nomePessoa = '$editar_usuario'");
+                            $resp = $banco->excluirDados("usuarios", "WHERE", "nome = '$editar_usuario'");
 
                             if($resp){
 
@@ -311,7 +317,7 @@
 
         <h1>Perfil de usuário</h1>
 
-        <img src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
+        <img src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
 
         <form action = "perfil.php" method = "post" enctype="multipart/form-data">
 
@@ -363,23 +369,23 @@
 
                     if(isset($_POST["alterar_dados"])){
                         
-                        if(isset($_POST["nome_usuario"]) || isset($_POST["senhaPessoa"])){
+                        if(isset($_POST["nome_usuario"]) || isset($_POST["senha"])){
                             
                             $novo_nome = $_POST["nome_usuario"];
 
-                            $res1 = $banco->atualizarDados("Pessoas", "nomePessoa = '$novo_nome'","WHERE", "nomePessoa = '$nome_usuario'");
+                            $res1 = $banco->atualizarDados("usuarios", "nome = '$novo_nome'","WHERE", "nome = '$nome_usuario'");
 
                             $novo_senha = $_POST["senha_usuario"];
 
-                            $res2 = $banco->atualizarDados("Pessoas", "senhaPessoa = '$novo_senha'","WHERE", "nomePessoa = '$nome_usuario'");
+                            $res2 = $banco->atualizarDados("usuarios", "senha = '$novo_senha'","WHERE", "nome = '$nome_usuario'");
 
                             $novo_cep = $_POST["cep_usuario"];
 
-                            $res3 = $banco->atualizarDados("Pessoas", "cepPessoa = '$novo_cep'","WHERE", "nomePessoa = '$nome_usuario'");
+                            $res3 = $banco->atualizarDados("usuarios", "cep = '$novo_cep'","WHERE", "nome = '$nome_usuario'");
                             
                             $novo_numero = $_POST["numero_casa"];
 
-                            $res4 = $banco->atualizarDados("Pessoas", "numeracao = '$novo_numero'","WHERE", "nomePessoa = '$nome_usuario'");
+                            $res4 = $banco->atualizarDados("usuarios", "numero_casa = '$novo_numero'","WHERE", "nome = '$nome_usuario'");
                             
                             if($res1){
                                 
@@ -437,7 +443,7 @@
                                 }
                             }
     
-                            $att_foto = $banco->atualizarDados("Pessoas", "imagem_pessoa = '$fileName'", "WHERE", "nomePessoa = '$nome_usuario'");
+                            $att_foto = $banco->atualizarDados("usuarios", "imagem_pessoa = '$fileName'", "WHERE", "nome = '$nome_usuario'");
     
                             if($att_foto){
     
@@ -453,7 +459,7 @@
 
                     if(isset($_POST["excluir_ctz"])){
 
-                        $resp = $banco->excluirDados("Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+                        $resp = $banco->excluirDados("usuarios", "WHERE", "nome = '$nome_usuario'");
 
                         if($resp){
 

@@ -19,7 +19,7 @@
 
     }
 
-    $cons1 = $banco->buscaSQL("cargo", "Pessoas", "WHERE", "nomePessoa = '$nome_usuario'");
+    $cons1 = $banco->buscaSQL("cargo", "usuarios", "WHERE", "nome = '$nome_usuario'");
 
     if(mysqli_num_rows($cons1) > 0){
 
@@ -115,7 +115,7 @@
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img class="me-2" src="../<?php echo $caminho .'/'. $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+                              <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
@@ -165,14 +165,14 @@
 
                     $i = 0;
 
-                        $consulta = $banco->buscaSQL("*","Pessoas");
+                        $consulta = $banco->buscaSQL("*","usuarios");
                     
                         while ($linha = mysqli_fetch_assoc($consulta)){
 
                             $id = $linha["id"];
-                            $nome = $linha["nomePessoa"];
-                            $cep = $linha["cepPessoa"];
-                            $numeracao = $linha["numeracao"];
+                            $nome = $linha["nome"];
+                            $cep = $linha["cep"];
+                            $numero_casa = $linha["numero_casa"];
                             $imagem_pessoa = $linha["imagem_pessoa"];
                             $cargo_pss = $linha["cargo"];
                             $email = $linha["email"];
@@ -182,7 +182,7 @@
                                 <th scope="row"><?php echo $id; ?></th>
                                 <td><?php echo $nome; ?></td>
                                 <td><?php echo $cep; ?></td>
-                                <td><?php echo $numeracao; ?></td>
+                                <td><?php echo $numero_casa; ?></td>
                                 <td><?php echo $imagem_pessoa; ?></td>
                                 <td><?php echo $cargo_pss; ?></td>
                                 <td><?php echo $email; ?></td>
@@ -217,7 +217,7 @@
                                 </td>
                             </tr>
                             <dialog id="modal<?php echo $i;?>">
-                                <img src="../<?php echo $caminho . $imagem_pessoa ?>" alt="img">
+                                <img src="../assets/img/users/<?php echo $imagem_pessoa ?>" alt="img">
                                 <button type="button" id="fecharModal<?php echo $i;?>" >Fechar</button>
                             </dialog>
 
@@ -233,7 +233,7 @@
                                 <?php
                                     if(isset($_POST["excluir_ctz_$i"])){
                                                                             
-                                            $resultado = $banco->excluirDados("Pessoas", "WHERE", "nomePessoa = '$nome'");
+                                            $resultado = $banco->excluirDados("usuarios", "WHERE", "nome = '$nome'");
 
                                             if($resultado){
 

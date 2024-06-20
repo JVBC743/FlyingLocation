@@ -53,17 +53,16 @@
                 
                 $linha = mysqli_fetch_assoc($busca_usuario);
 
-                $nome_usuario = $linha["nomePessoa"];
-                $senhaPessoa = $linha["senhaPessoa"];
-                $cepPessoa = $linha["cepPessoa"];
-                $numeracao = $linha["numeracao"];
+                $nome_usuario = $linha["nome"];
+                $senha = $linha["senha"];
+                $cep = $linha["cep"];
+                $numero_casa = $linha["numero_casa"];
                 $email = $linha["email"];
-                $caminho = $linha["caminho"];
                 $imagem_pessoa = $linha["imagem_pessoa"];
                 
             }
 
-            $banco->inserirDados("Pessoas", "'$nome_usuario', '$senhaPessoa', '$cepPessoa', '$numeracao', '$email' , '$caminho', '$imagem_pessoa'", "nomePessoa, senhaPessoa, cepPessoa, numeracao, email, caminho, imagem_pessoa");
+            $banco->inserirDados("usuarios", "'$nome_usuario', '$senha', '$cep', '$numero_casa', '$email' , '$imagem_pessoa'", "nome, senha, cep, numero_casa, email, imagem_pessoa");
             
             echo "<h1> A sua conta foi cadastrada com sucesso!</h1>";
             
@@ -98,7 +97,7 @@
 
                     if($valor_senha_1 === $valor_senha_2){
 
-                        $alterar_senha = $banco->atualizarDados("Pessoas", "senhaPessoa = '$valor_senha_2'", "WHERE", "nomePessoa = '$nome_usuario'");
+                        $alterar_senha = $banco->atualizarDados("usuarios", "senha = '$valor_senha_2'", "WHERE", "nome = '$nome_usuario'");
 
                         echo "Senha atualizada com sucesso!";
 
