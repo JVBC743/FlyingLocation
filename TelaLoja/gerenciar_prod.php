@@ -42,77 +42,107 @@ if(mysqli_num_rows($cons) > 0){
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">  
             <div class="container-fluid">
-                <a class="navbar-brand" href="../index.php">FlyingLocation</a>                 
+                <a class="navbar-brand" href="../TelaLoja/loja.php">FlyingLocation</a>                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="loja.php" >Loja</a>
-                        </li>                        
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" >Cadastrar Produto</a>
-                        </li>     
-
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href = "editar_prod.php">Meus produtos</a>
-                        </li>
-
-                        <li class="nav-item">
-
-                            <form action="loja.php" method = "post">
-
-                            <input class="nav-link" type = "submit" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
-
-                            </form>
-
-                            <?php
-
-                                if(isset($_POST["lista"])){
-
-                                    header("Location: ../tela/lista_usuarios.php");
-
-                                }
-                            ?>
                         
-                        </li>
-                    </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                    </li>
 
-                    <?php if (!empty($caminho) && !empty($imagem_pss)):?>
+                    <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
+                        <li class="nav-item">
+
+                        <form action = "<?php echo $_SERVER["PHP_SELF"];?>" method = "post">
+                            <input type = "submit" class="nav-link" value = "Cadastrar Produto" name = "cad_prod">
+                        </form>
+
+                        <?php 
+                                if(isset($_POST["cad_prod"])){
+                                    
+                                    $_SESSION["nome_usuario"];                                 
+                                    header("Location: ../TelaLoja/gerenciar_prod.php");
+                                }
+                        ?>
+                        </li>     
+                    <?php endif;?>  
+
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
+                    </li>
+
+                    <?php if($cargo == 'administrador'): ?>
+                    <li class="nav-item">
+
+                    <form action="loja.php" method = "post">
+
+                        <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
+
+                    </form>
+
+                    <?php
+
+                        if(isset($_POST["lista"])){
+
+                            header("Location: ../tela/lista_usuarios.php");
+
+                        }
+                    ?>
+                        
+
+                    </li>
+
+                    <?php endif; ?>
+
+                    </ul>
+                    
+                    <?php if (!empty($imagem_pss)):?>
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+
+
                               <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+
+
+
+
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
-                            <li><input type = "submit" class="dropdown-item" value = "Perfil" name = "perfil"></li>
+                            <li class = "nav-link active"><input type = "submit" class="dropdown-item" value = "Perfil" name = "perfil"></li>
                             <li><input type = "submit" class="dropdown-item" value = "Sair" name = "sair"></li>
                           </ul>
                           </form>
                             <?php 
                                 if(isset($_POST["perfil"])){
 
+                                    if(isset($_SESSION["editar_usuario"])){
+
+                                        unset($_SESSION["editar_usuario"]);
+
+                                    }
+
                                     $_SESSION["nome_usuario"];
                                     header("Location: ../tela/perfil.php");
-
                                 }
-                        
                                 if(isset($_POST["sair"])){
-
                                     session_destroy();
                                     header("Location: ../index.php");
-                                    exit();
                                 }
                             ?>
-
                         </div>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
         </nav>
+
+
     <div class="center">
         <h1>Tela de cadastramento de produtos</h1>
     </div>

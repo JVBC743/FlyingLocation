@@ -53,17 +53,18 @@
 
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">  
+<nav class="navbar navbar-expand-lg bg-body-tertiary">  
             <div class="container-fluid">
-                <a class="navbar-brand" href="../index.php">FlyingLocation</a>                 
+                <a class="navbar-brand" href="../TelaLoja/loja.php">FlyingLocation</a>                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href = "../TelaLoja/loja.php">Loja</a>
-                        </li>
+                        
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                    </li>
 
                     <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
                         <li class="nav-item">
@@ -91,7 +92,7 @@
 
                     <form action="loja.php" method = "post">
 
-                        <input class="nav-link active" type = "submit" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
+                        <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
 
                     </form>
 
@@ -111,30 +112,40 @@
 
                     </ul>
                     
-                    <?php if (!empty($caminho) && !empty($imagem_pss)):?>
+                    <?php if (!empty($imagem_pss)):?>
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+
+
                               <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
+
+
+
+
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                           <ul class="dropdown-menu">
-                            <li><input type = "submit" class="dropdown-item" value = "Perfil" name = "perfil"></li>
+                            <li class = "nav-link active"><input type = "submit" class="dropdown-item" value = "Perfil" name = "perfil"></li>
                             <li><input type = "submit" class="dropdown-item" value = "Sair" name = "sair"></li>
                           </ul>
                           </form>
                             <?php 
                                 if(isset($_POST["perfil"])){
 
-                                    $_SESSION["nome_usuario"] = $nome_usuario;
+                                    if(isset($_SESSION["editar_usuario"])){
+
+                                        unset($_SESSION["editar_usuario"]);
+
+                                    }
+
+                                    $_SESSION["nome_usuario"];
                                     header("Location: ../tela/perfil.php");
-
                                 }
-                        
                                 if(isset($_POST["sair"])){
-
+                                    session_destroy();
                                     header("Location: ../index.php");
-
                                 }
                             ?>
                         </div>
@@ -176,6 +187,16 @@
                             $imagem_pessoa = $linha["imagem_pessoa"];
                             $cargo_pss = $linha["cargo"];
                             $email = $linha["email"];
+
+                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                foreach ($_POST as $key => $value) {
+                                    if (strpos($key, "editar_") === 0) {
+                                        $_SESSION["editar_usuario"] = $_POST["editar_usuario"];
+                                        header("Location: perfil.php");
+                                        exit; 
+                                    }
+                                }
+                            }
                             
                     ?>
                             <tr>
@@ -189,28 +210,14 @@
 
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET" class="d-inline">
-
-                                            <input type="hidden" name="nome_pessoa_<?php echo $i; ?>" value="<?php echo $nome; ?>">
-                                            <button type="submit" class="btn btn-primary" name="editar">Editar</button>
-                                            
-                                        </form>
+                                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" class="d-inline">
+                                        <input type="hidden" name="editar_usuario" value="<?php echo $nome; ?>">
+                                        <button type="submit" class="btn btn-primary" name="editar_<?php echo $i; ?>">Editar</button>
+                                    </form>
                                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" class="d-inline">
                                             <input type="hidden" name="apagar_pessoa_<?php echo $i; ?>" value="<?php echo $nome; ?>">
                                             <button type="button"id="delAbrirModal<?php echo $i;?>" class="btn btn-danger">Apagar</button>
                                         </form>
-
-                                        <?php
-
-                                            if(isset($_POST["editar"])){
-
-                                                $token = uniqid();
-
-                                                $banco->inserirDados("Tokens", "'$token', '$id'", "'valorToken', 'idUsuario'");
-                                                
-                                                header("perfil.php");
-                                            }
-                                        ?>
 
                                         <button type="button" id="abrirModal<?php echo $i;?>" >Ver Imagem</button>
                                     </div>

@@ -8,11 +8,15 @@
     $banco = BDAcesso::getInstance();
 
 
-    if(isset($_SESSION["editar_usuario"])){
+    //$veredito = isset($_SESSION["editar_usuario"]) ? $_SESSION["editar_usuario"] : (isset($_SESSION["nome_usuario"]) ? $_SESSION["nome_usuario"] : null);
 
-        $editar_usuario = $_SESSION["nome_usuario"];
+    if (isset($_SESSION["editar_usuario"])) {
+        $veredito = $_SESSION["editar_usuario"];
+    } else {
+        $veredito = $_SESSION["nome_usuario"];
+    }
 
-        $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$editar_usuario'");
+    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$veredito'");
     
         if(mysqli_num_rows($cons) > 0){
 
@@ -23,32 +27,6 @@
             $cep = $linha["cep"];
             $numero = $linha["numero_casa"];
         }
-        
-    }else{
-
-        $editar_usuario = null;
-    }
-
-    if(isset($_SESSION["nome_usuario"])){
-
-        $nome_usuario = $_SESSION["nome_usuario"];
-
-        $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
-    
-        if(mysqli_num_rows($cons) > 0){
-
-            $linha = mysqli_fetch_assoc($cons);
-            $senha = $linha["senha"];
-            $imagem_pss = $linha["imagem_pessoa"];
-            $cargo = $linha["cargo"];
-            $cep = $linha["cep"];
-            $numero = $linha["numero_casa"];
-        }
-        
-    }else{
-
-        $nome_usuario = null;
-    }
 ?>
 
 <!DOCTYPE html>
@@ -62,14 +40,14 @@
 </head>
 <body>
 
-    <?php if($nome_usuario == null): ?> 
+    <?php if($_SESSION["nome_usuario"] == null): ?> 
 
         <h1>Você tentou acessar a página da loja sem estar logado.</h1><br>
         <a href = "../index.php">Voltar</a>
 
     <?php else: ?>
 
-        <!-- <img src = "../<?php echo $caminho ."/". $imagem_pss ?>" style = "height: 50px; width: 50px;"> -->
+<!-- ============================================================NAV BAR=================================================================================== -->
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">  
             <div class="container-fluid">
@@ -107,7 +85,7 @@
 
                     </ul>
                     
-                    <?php if (!empty($caminho) && !empty($imagem_pss)):?>
+                    <?php if (!empty($imagem_pss)):?>
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -128,10 +106,18 @@
                           </form>
                             <?php 
                                 if(isset($_POST["perfil"])){
+
+                                    if(isset($_SESSION["editar_usuario"])){
+
+                                        unset($_SESSION["editar_usuario"]);
+
+                                    }
+
                                     $_SESSION["nome_usuario"];
                                     header("Location: ../tela/perfil.php");
                                 }
                                 if(isset($_POST["sair"])){
+                                    session_destroy();
                                     header("Location: ../index.php");
                                 }
                             ?>
@@ -142,167 +128,8 @@
             </div>
         </nav>
 
-        <?php if($editar_usuario != null): ?>
+<!-- ============================================================NAV BAR=================================================================================== -->
 
-            <h1>BENGASSS</h1>
-
-            <h1>Perfil de usuário</h1>
-
-            <img src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
-
-            <form action = "perfil.php" method = "post" enctype="multipart/form-data">
-
-                <div class="input-group mb3" id="width-30rem">
-                        <span class="input-group-text" id="basic-addon1">Nome:</span>
-                        <input type="text" class="form-control" name = "nome_usuario"  value = "<?php echo $editar_usuario?>" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-
-                <br>
-
-                <div class="input-group mb3" id="width-30rem">
-                    <span class="input-group-text" id="basic-addon1">Senha:</span>
-                    <input type="text" class="form-control" name = "senha_usuario"  value = "<?php echo $senha; ?>" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-
-                <br>
-
-                <div class="input-group mb3" id="width-30rem">
-                    <span class="input-group-text" id="basic-addon1">CEP:</span>
-                    <input type="text" class="form-control" name = "cep_usuario"  value = "<?php echo $cep; ?>" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-                <br>
-
-                <div class="input-group mb3" id="width-30rem">
-                    <span class="input-group-text" id="basic-addon1">N° da casa:</span>
-                    <input type="text" class="form-control" name = "numero_casa"  value = "<?php echo $numero; ?>" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-                <br>
-
-                <div class="input-group mb3" id="width-30rem">
-                    <span class="input-group-text" id="basic-addon1">Imagem de perfil:</span>
-                    <input type = "file" name = "imagem_usuario" class="form-control" aria-label="Username" aria-describedby="basic-addon1"><br><br>
-                </div>
-                <br>
-                                
-                <input type = "submit" name = "alterar_dados" value = "Alterar Dados">
-
-            </form>
-
-            <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
-                <button id="AbrirModal" type = "button" class="btn btn-danger">Excluir Conta</button>
-                <dialog id="modal">
-                        <h4>Tem a plena CERTEZA de que quer excluir a sua conta? (Essa ação não pode ser desfeita)</h4>
-                        <input type = "submit" class="btn btn-danger" name = "excluir_ctz" value = "Excluir Mesmo!">
-                        <button type="button" id="FechaModal" class="btn btn-success" >Cancelar</button>
-                </dialog>
-            </form>
-                    <?php 
-
-                        if(isset($_POST["alterar_dados"])){
-                            
-                            if(isset($_POST["nome_usuario"]) || isset($_POST["senha"])){
-                                
-                                $novo_nome = $_POST["nome_usuario"];
-
-                                $res1 = $banco->atualizarDados("usuarios", "nome = '$novo_nome'","WHERE", "nome = '$editar_usuario'");
-
-                                $novo_senha = $_POST["senha_usuario"];
-
-                                $res2 = $banco->atualizarDados("usuarios", "senha = '$novo_senha'","WHERE", "nome = '$editar_usuario'");
-
-                                $novo_cep = $_POST["cep_usuario"];
-
-                                $res3 = $banco->atualizarDados("usuarios", "cep = '$novo_cep'","WHERE", "nome = '$editar_usuario'");
-                                
-                                $novo_numero = $_POST["numero_casa"];
-
-                                $res4 = $banco->atualizarDados("usuarios", "numero_casa = '$novo_numero'","WHERE", "nome = '$editar_usuario'");
-                                
-                                if($res1){
-                                    
-                                    $_SESSION["editar_usuario"] = $novo_nome;    
-                                    echo "Nome atualizada com sucesso!<br>";
-                                }else{
-                                    echo "Falha na atualização do nome.<br>";
-                                }
-
-                                if($res2){
-                                    echo "Senha atualizada com sucesso!<br>";
-                                }else{
-                                    echo "Falha na atualização da senha.<br>";
-                                }
-
-                                if($res3){
-                                    echo "CEP atualizado com sucesso!<br>";
-                                }else{
-                                    echo "Falha na atualização do CEP.<br>";
-                                }
-
-                                if($res4){
-                                    echo "N° da casa atualizado com sucesso!<br>";
-                                }else{
-                                    echo "Falha na atualização do N° da casa.<br>";
-                                }
-                            }    
-
-                            if(isset($_FILES["imagem_usuario"]) && $_FILES["imagem_usuario"]["size"] > 0){
-
-                                $targetDir = "../assets/img/users/"; 
-                                $fileName = basename($_FILES["imagem_usuario"]["name"]); //Nome do arquivo
-                                $targetFile = $targetDir . $fileName;
-                                $uploadOk = 1;
-        
-                                $imageFileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
-                                if($imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png" && $imageFileType != "gif" ) {
-                                    echo "Desculpe, apenas arquivos JPG, JPEG, PNG e GIF são permitidos.";
-                                    $uploadOk = 0;
-                                }
-                                if (file_exists($targetFile)) {
-                                    echo "Desculpe, o arquivo já existe.";
-                                    $uploadOk = 0;
-                                }
-        
-                                if ($_FILES["imagem_usuario"]["size"] > 500000) {
-                                    echo "Desculpe, o arquivo é muito grande.";
-                                    $uploadOk = 0;
-                                }
-                                if ($uploadOk == 1) {
-                                    if (move_uploaded_file($_FILES["imagem_usuario"]["tmp_name"], $targetFile)) {
-                                        echo "O arquivo " . basename($_FILES["imagem_usuario"]["name"]) . " foi enviado com sucesso.";
-                                    } else {
-                                        echo "Desculpe, ocorreu um erro ao enviar o arquivo.";
-                                    }
-                                }
-        
-                                $att_foto = $banco->atualizarDados("usuarios", "imagem_pessoa = '$fileName'", "WHERE", "nome = '$editar_usuario'");
-        
-                                if($att_foto){
-        
-                                    echo "Foto atualizda com sucesso!";
-        
-                                }else{
-        
-                                    echo "Ocorreu um erro.";
-        
-                                }
-                            }
-                        }
-
-                        if(isset($_POST["excluir_ctz"])){
-
-                            $resp = $banco->excluirDados("usuarios", "WHERE", "nome = '$editar_usuario'");
-
-                            if($resp){
-
-                                session_destroy();
-                                header("Location: ../index.php");
-                            }else{
-                                echo "Conta não excluída.";
-                            }
-                        }
-                    ?>
-
-        <?php else: ?>
 
         <h1>Perfil de usuário</h1>
 
@@ -312,7 +139,7 @@
 
             <div class="input-group mb3" id="width-30rem">
                     <span class="input-group-text" id="basic-addon1">Nome:</span>
-                    <input type="text" class="form-control" name = "nome_usuario"  value = "<?php echo $nome_usuario?>" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" name = "nome_usuario"  value = "<?php echo $veredito?>" aria-label="Username" aria-describedby="basic-addon1">
             </div>
 
             <br>
@@ -362,19 +189,19 @@
                             
                             $novo_nome = $_POST["nome_usuario"];
 
-                            $res1 = $banco->atualizarDados("usuarios", "nome = '$novo_nome'","WHERE", "nome = '$nome_usuario'");
+                            $res1 = $banco->atualizarDados("usuarios", "nome = '$novo_nome'","WHERE", "nome = '$veredito'");
 
                             $novo_senha = $_POST["senha_usuario"];
 
-                            $res2 = $banco->atualizarDados("usuarios", "senha = '$novo_senha'","WHERE", "nome = '$nome_usuario'");
+                            $res2 = $banco->atualizarDados("usuarios", "senha = '$novo_senha'","WHERE", "nome = '$veredito'");
 
                             $novo_cep = $_POST["cep_usuario"];
 
-                            $res3 = $banco->atualizarDados("usuarios", "cep = '$novo_cep'","WHERE", "nome = '$nome_usuario'");
+                            $res3 = $banco->atualizarDados("usuarios", "cep = '$novo_cep'","WHERE", "nome = '$veredito'");
                             
                             $novo_numero = $_POST["numero_casa"];
 
-                            $res4 = $banco->atualizarDados("usuarios", "numero_casa = '$novo_numero'","WHERE", "nome = '$nome_usuario'");
+                            $res4 = $banco->atualizarDados("usuarios", "numero_casa = '$novo_numero'","WHERE", "nome = '$veredito'");
                             
                             if($res1){
                                 
@@ -432,7 +259,7 @@
                                 }
                             }
     
-                            $att_foto = $banco->atualizarDados("usuarios", "imagem_pessoa = '$fileName'", "WHERE", "nome = '$nome_usuario'");
+                            $att_foto = $banco->atualizarDados("usuarios", "imagem_pessoa = '$fileName'", "WHERE", "nome = '$veredito'");
     
                             if($att_foto){
     
@@ -448,7 +275,7 @@
 
                     if(isset($_POST["excluir_ctz"])){
 
-                        $resp = $banco->excluirDados("usuarios", "WHERE", "nome = '$nome_usuario'");
+                        $resp = $banco->excluirDados("usuarios", "WHERE", "nome = '$veredito'");
 
                         if($resp){
 
@@ -460,7 +287,6 @@
                      }
                 ?>
         <?php endif; ?>
-    <?php endif; ?>
 
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
