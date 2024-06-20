@@ -21,6 +21,8 @@
     <title>Recuperação de Senha</title>
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/login_register.css">
+    <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
+
     <style>
         #width-30rem{
             width: 30rem;

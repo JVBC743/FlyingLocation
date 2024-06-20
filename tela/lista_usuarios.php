@@ -19,15 +19,14 @@
 
     }
 
-    $cons1 = $banco->buscaSQL("cargo", "usuarios", "WHERE", "nome = '$nome_usuario'");
+    $cons1 = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
 
     if(mysqli_num_rows($cons1) > 0){
 
         $linha = mysqli_fetch_assoc($cons1);
 
         $cargo = $linha["cargo"];
-        $id = $linha["id"];
-
+        $imagem_pss = $linha["imagem_pessoa"];
     }
 
 ?>
@@ -37,9 +36,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lista de Usuários</title>
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
+    <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
+
 </head>
 <body>
 
@@ -92,7 +93,7 @@
 
                     <form action="loja.php" method = "post">
 
-                        <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
+                        <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link active" aria-current="page" value = "Lista de Usuários" name = "lista">
 
                     </form>
 
@@ -219,7 +220,6 @@
                                             <button type="button"id="delAbrirModal<?php echo $i;?>" class="btn btn-danger">Apagar</button>
                                         </form>
 
-                                        <button type="button" id="abrirModal<?php echo $i;?>" >Ver Imagem</button>
                                     </div>
                                 </td>
                             </tr>

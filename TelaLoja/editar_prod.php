@@ -65,6 +65,8 @@
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
+    <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
+
 </head>
 <body>
 
@@ -106,7 +108,7 @@
                     <?php endif;?>  
 
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
+                        <a class="nav-link active" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
                     </li>
 
                     <?php if($cargo == 'administrador'): ?>

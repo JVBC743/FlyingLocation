@@ -30,6 +30,8 @@ if(mysqli_num_rows($cons) > 0){
     <title>Cadastrar Produto</title>
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
+    <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
+
 </head>
 <body>
 
@@ -57,7 +59,7 @@ if(mysqli_num_rows($cons) > 0){
                         <li class="nav-item">
 
                         <form action = "<?php echo $_SERVER["PHP_SELF"];?>" method = "post">
-                            <input type = "submit" class="nav-link" value = "Cadastrar Produto" name = "cad_prod">
+                            <input type = "submit" class="nav-link active" value = "Cadastrar Produto" name = "cad_prod">
                         </form>
 
                         <?php 

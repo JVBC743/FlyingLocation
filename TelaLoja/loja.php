@@ -48,6 +48,7 @@
     <title>Loja</title>
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
+    <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
 </head>
 <body>
 
@@ -112,7 +113,7 @@ function exibirprodutos($consultaSQL)
                     <ul class="navbar-nav">
                         
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                        <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                     </li>
 
                     <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>

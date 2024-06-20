@@ -27,6 +27,8 @@
     <title><?php echo $nome_produto; ?></title>
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
+    <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
+
 </head>
 <body>
     <?php if($nome_produto == null): ?> <!--//OLHA O IFFFF-->
