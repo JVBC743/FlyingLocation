@@ -13,11 +13,10 @@ else{
 }
 $banco = BDAcesso::getInstance();
 
-$cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
+$cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
 
 if(mysqli_num_rows($cons) > 0){
     $user_log = mysqli_fetch_assoc($cons);
-    $caminho = $user_log["caminho"];
     $imagem_pss = $user_log["imagem_pessoa"];
     $cargo = $user_log["cargo"];
 }

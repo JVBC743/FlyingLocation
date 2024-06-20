@@ -7,16 +7,6 @@
 
     $banco = BDAcesso::getInstance();
 
-    $token_adquirido = isset($_GET["token"]) ? $_GET["token"] : null;
-
-    echo $token_adquirido;
-
-    if ($token_adquirido == null) {
-
-        echo "O valor do token é nulo.";
-        exit;
-
-    }
 
     if(isset($_SESSION["editar_usuario"])){
 
@@ -48,7 +38,6 @@
         if(mysqli_num_rows($cons) > 0){
 
             $linha = mysqli_fetch_assoc($cons);
-            $caminho = $linha["caminho"];
             $senha = $linha["senha"];
             $imagem_pss = $linha["imagem_pessoa"];
             $cargo = $linha["cargo"];

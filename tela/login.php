@@ -58,7 +58,7 @@
                 if($retorno && mysqli_num_rows($retorno) > 0){
 
                     $linha = mysqli_fetch_assoc($retorno);
-                    $senha_armazenada = $linha["senhaPessoa"];
+                    $senha_armazenada = $linha["senha"];
 
                     if($senha_usuario == $senha_armazenada){
 

@@ -27,15 +27,14 @@
     
     if(mysqli_num_rows($cons) > 0){
         $user_log = mysqli_fetch_assoc($cons);
-        $nome_usuario = $user_log["nomePessoa"];
-        $caminho = $user_log["caminho"];
+        $nome_usuario = $user_log["nome"];
         $imagem_pss = $user_log["imagem_pessoa"];
         $cargo = $user_log["cargo"];
     }
 
     $_SESSION["nome_usuario"] = $nome_usuario;
     
-    $cons1 = $banco->buscaSQL("cepPessoa","usuarios","WHERE","nomePessoa = '$nome_usuario'");
+    $cons1 = $banco->buscaSQL("cep","usuarios","WHERE","nome = '$nome_usuario'");
 
     $cons2 = $banco->buscaSQL("*", "produtos");
 
@@ -161,7 +160,7 @@ function exibirprodutos($consultaSQL)
 
                     </ul>
                     
-                    <?php if (!empty($caminho) && !empty($imagem_pss)):?>
+                    <?php if (!empty($imagem_pss)):?>
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

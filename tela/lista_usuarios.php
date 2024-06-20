@@ -26,7 +26,7 @@
         $linha = mysqli_fetch_assoc($cons1);
 
         $cargo = $linha["cargo"];
-        $id = $linha["idPessoa"];
+        $id = $linha["id"];
 
     }
 

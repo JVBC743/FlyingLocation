@@ -47,7 +47,7 @@
 
         <?php 
             
-            $busca_usuario = $banco->buscaSQL("*","UsuariosTemporarios");
+            $busca_usuario = $banco->buscaSQL("*","usuarios_temporarios");
 
             if($busca_usuario && mysqli_num_rows($busca_usuario)){
                 
@@ -58,11 +58,10 @@
                 $cep = $linha["cep"];
                 $numero_casa = $linha["numero_casa"];
                 $email = $linha["email"];
-                $imagem_pessoa = $linha["imagem_pessoa"];
                 
             }
 
-            $banco->inserirDados("usuarios", "'$nome_usuario', '$senha', '$cep', '$numero_casa', '$email' , '$imagem_pessoa'", "nome, senha, cep, numero_casa, email, imagem_pessoa");
+            $banco->inserirDados("usuarios", "'$nome_usuario', '$senha', '$cep', '$numero_casa', 'cliente', '$email' , 'anonimo.png'", "nome, senha, cep, numero_casa, cargo, email, imagem_pessoa");
             
             echo "<h1> A sua conta foi cadastrada com sucesso!</h1>";
             

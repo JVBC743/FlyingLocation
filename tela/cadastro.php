@@ -85,22 +85,22 @@
 
                                 $token = uniqid();
 
-                                $inserir_usr = $banco->inserirDados("UsuariosTemporarios", "'$nome_cadastro', '$senha_cadastro', '$cep_cadastro', '$numero_casa', '$email', NOW() + INTERVAL 1 HOUR", "nome, senha, cep, numero_casa, email, data_expiracao");
+                                $inserir_usr = $banco->inserirDados("usuarios_temporarios", "'$nome_cadastro', '$senha_cadastro', '$cep_cadastro', '$numero_casa', '$email', NOW() + INTERVAL 1 HOUR", "nome, senha, cep, numero_casa, email, data_expiracao");
 
                                 if($inserir_usr == false){
 
-                                    echo "<script>alert('Inserção inválida')</script>";
+                                    echo "<script>window.alert('Inserção inválida')</script>";
 
 
                                 }else{
                                     
                                     $data_expiracao = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-                                    $inserir_tok = $banco->inserirDados("Tokens", "'$token', '$data_expiracao', '$email'", "valorToken, dataExpiracao, email");
+                                    $inserir_tok = $banco->inserirDados("tokens", "'$token', '$data_expiracao', '$email'", "valor_token, data_expiracao, email");
                                     
                                     if($inserir_tok == false){
 
-                                        echo "<script>alert('No token, não funfou.')</script>";
+                                        echo "<script>window.alert('No token, não funfou.')</script>";
 
                                     }else{
 
@@ -120,7 +120,7 @@
 
                                         $mail->Subject = "Criação de conta - FlyingLocation";
 
-                                        $link_cadastro = 'http://201.2.18.191:1234/padroes_projeto/tela/pegar_token.php?token=' . $token;
+                                        $link_cadastro = 'http://201.2.18.191:2222/FlyingLocation/tela/pegar_token.php?token=' . $token;
 
                                         $mail->Body = nl2br("Olá, foi solicitado a criação de uma conta no nosso site FlyingLocation.<br> 
                                         Para criar a sua conta, você pode clicar no link a seguir: <a href = '$link_cadastro'>clique aqui</a><br><br>
@@ -135,7 +135,7 @@
                                                 echo "E-mail enviado com sucesso!!!<br>";
                                             }
 
-                                        echo "<script>alert('E-mail enviado com sucesso!')</script>";
+                                        echo "<script>>window.alert('E-mail enviado com sucesso!')</script>";
 
 
                                         $_SESSION["aviso"] = true;
@@ -146,31 +146,31 @@
                             }else{
 
                                 echo "Numeração inválida ou não inserida";
-                                echo "<script>alert('Numeração inválida ou não inserida')</script>";
+                                echo "<script>window.alert('Numeração inválida ou não inserida')</script>";
                             }
                         }
                         
 
                     }else{
                         echo "CEP inválido";
-                        echo "<script>alert('CEP inválido')</script>";
+                        echo "<script>window.alert('CEP inválido')</script>";
 
                     }
 
                 }else{
 
                     echo "E-mail não inserido.";
-                    echo "<script>alert('E-mail não inserido')</script>";
+                    echo "<script>window.alert('E-mail não inserido')</script>";
 
                 }
             }else{
                 echo "Senha não inserida";
-                echo "<script>alert('Senha não inserida')</script>";
+                echo "<script>window.alert('Senha não inserida')</script>";
 
             }
         }else{
             echo "Nome não inserido";
-            echo "<script>alert('Nome não inserido')</script>";
+            echo "<script>window.alert('Nome não inserido')</script>";
 
         }
     }

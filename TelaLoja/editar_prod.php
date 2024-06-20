@@ -15,18 +15,17 @@
         echo "Error no usuário";
     }
 
-    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
+    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
     
     if(mysqli_num_rows($cons) > 0){
 
         $user_log = mysqli_fetch_assoc($cons);
-        $caminho = $user_log["caminho"];
         $imagem_pss = $user_log["imagem_pessoa"];
 
     }
     
 
-    $busca_cargo = $banco->buscaSQL("cargo", "usuarios", "WHERE", "nomePessoa = '$nome_usuario'");
+    $busca_cargo = $banco->buscaSQL("cargo", "usuarios", "WHERE", "nome = '$nome_usuario'");
     
     $consulta = $banco->buscaSQL("*","produtos", "WHERE" , "fornecedor = '$nome_usuario'");
 
@@ -129,7 +128,7 @@
 
                     </ul>
                     
-                    <?php if (!empty($caminho) && !empty($imagem_pss)):?>
+                    <?php if (!empty($imagem_pss)):?>
                         <div class="d-flex" > 
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -174,7 +173,7 @@
             
                 if(isset($_POST["tornar_fornecedor"])){
 
-                    $alt_cargo = $banco->atualizarDados("usuarios", "cargo = 'fornecedor'", "WHERE", "nomePessoa = '$nome_usuario'");
+                    $alt_cargo = $banco->atualizarDados("usuarios", "cargo = 'fornecedor'", "WHERE", "nome = '$nome_usuario'");
                     sleep(3);
                     header("Location: editar_prod.php");
                 }
@@ -218,7 +217,6 @@
                             $data = $linha["fabricacao"];
                             $garantia = $linha["garantia"];
                             $desc = $linha["descricao"];
-                            $cam = $linha["caminho"];
                             $img = $linha["imagem_produto"];
                             $fornecedor = $linha["fornecedor"];
                 ?>

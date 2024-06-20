@@ -68,7 +68,7 @@
 
                 $token = uniqid();
 
-                $insercao = $banco_rec->inserirDados("Tokens", "'$id_usuario', '$token', NOW() + INTERVAL 1 HOUR", "idUsuario, valorToken, dataExpiracao");
+                $insercao = $banco_rec->inserirDados("tokens", "'$id_usuario', '$token', NOW() + INTERVAL 1 HOUR", "id_usuario, valor_token, data_expiracao");
 
                 if ($insercao) {
 
@@ -97,7 +97,7 @@
 
                 $mail->Subject = "Alteração de senha - FlyingLocation";
 
-                $link_recuperacao = 'http://201.2.18.191:1234/padroes_projeto/tela/pegar_token.php?token=' . $token;
+                $link_recuperacao = 'http://201.2.18.191:2222/FlyingLocation/tela/pegar_token.php?token=' . $token;
 
                 $mail->Body = nl2br("Olá, foi solicitado a mudança de senha para a conta que possui este e-mail vinculado no nosso site FlyingLocation. <br> 
                 Se você não solicitou nenhum tipo de recuperação de senha para esta conta, por favor, ignore este e-mail. <br><br>

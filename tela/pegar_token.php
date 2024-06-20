@@ -29,17 +29,17 @@
 
     }else{
 
-        $busca_token = $banco_rec->buscaSQL("*", "Tokens", "WHERE", "valorToken = '$token_adquirido'");
+        $busca_token = $banco_rec->buscaSQL("*", "tokens", "WHERE", "valor_token = '$token_adquirido'");
 
         if($busca_token && mysqli_num_rows($busca_token) > 0){
 
             $linha_token = mysqli_fetch_assoc($busca_token);
 
-            $token_vindo_busca = $linha_token["valorToken"];
+            $token_vindo_busca = $linha_token["valor_token"];
 
             $email = $linha_token["email"];
 
-            $id_usuario = $linha_token["idUsuario"];
+            $id_usuario = $linha_token["id_usuario"];
 
             $_SESSION["token_banco"] = $token_vindo_busca;
 
@@ -54,12 +54,12 @@
         }
     }
 
-    $busca_email = $banco_rec->buscaSQL("*", "UsuariosTemporarios", "WHERE", "email = '$email'");
+    $busca_email = $banco_rec->buscaSQL("*", "usuarios_temporarios", "WHERE", "email = '$email'");
 
     if($busca_email && mysqli_num_rows($busca_email)){
         $linha_email = mysqli_fetch_assoc($busca_email);
         
-        $nome_usuario = $linha_email["nomePessoa"];
+        $nome_usuario = $linha_email["nome"];
 
         $_SESSION["nome_usuario"] = $nome_usuario;
         header("Location: tela_recuperacao.php");
@@ -71,7 +71,7 @@
 
         $linha_usr = mysqli_fetch_assoc($busca_usuario);
 
-        $nome_usuario = $linha_usr["nomePessoa"];
+        $nome_usuario = $linha_usr["nome"];
 
         $_SESSION["nome_usuario"] = $nome_usuario;
 
