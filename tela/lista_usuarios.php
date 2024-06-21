@@ -28,6 +28,16 @@
         $cargo = $linha["cargo"];
         $imagem_pss = $linha["imagem_pessoa"];
     }
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, "editar_") === 0) {
+                $_SESSION["editar_usuario"] = $_POST["editar_usuario"];
+                header("Location: perfil.php");
+                exit; 
+            }
+        }
+    }
 
 ?>
 
@@ -188,16 +198,6 @@
                             $imagem_pessoa = $linha["imagem_pessoa"];
                             $cargo_pss = $linha["cargo"];
                             $email = $linha["email"];
-
-                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                foreach ($_POST as $key => $value) {
-                                    if (strpos($key, "editar_") === 0) {
-                                        $_SESSION["editar_usuario"] = $_POST["editar_usuario"];
-                                        header("Location: perfil.php");
-                                        exit; 
-                                    }
-                                }
-                            }
                             
                     ?>
                             <tr>

@@ -40,25 +40,25 @@
     if ($consultaSQL) {
         $i = 0;
         while (($linha = mysqli_fetch_assoc($consultaSQL))) {
-            $preco = str_replace(".",",", $linha["precoProduto"]);
+            $preco = str_replace(".",",", $linha["preco"]);
 
 ?>
             <div class="produto col-6 col-md-3 m-3" id="width-20rem">
-                <img class="img-thumbnail" src="../assets/img/users/<?php echo $linha["imagem_produto"] ?>" alt="Produto 1">
-                <h3><a href="produto.php"><?php echo $linha["nome_produto"]; ?></a></h3>
+                <img class="img-thumbnail" src="assets/img/products/<?php echo $linha["imagem_produto"]; ?>" alt="Produto 1">
+                <h3><?php echo $linha["nome_produto"]; ?></h3>
                 <p class="preco"><?php echo "R$ " . $preco; ?></p>
 
                 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <input type="hidden" name="nome_produto" value="<?php echo $linha["nome_produto"]; ?>">
-                    <input type="submit" class="botao" value="Comprar Agora" name="comprar<?php echo $i; ?>">
-                    <?php
-                        if(isset($_POST["comprar". $i])){
-
-                            header("Location: tela/login.php");
-                        }
-                    ?>
+                    <input type="submit" class="botao" value="Comprar Agora" name="comprar_<?php echo $i; ?>">
                 </form>
                 <?php
+
+                    if(isset($_POST["comprar_$i"])){
+
+                        header("Location: tela/login.php");
+                    }
+
                 $i++;
                 ?>
             </div>
@@ -66,6 +66,8 @@
         }
     }
 }
+
+    
 
 ?>
 

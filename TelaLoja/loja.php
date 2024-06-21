@@ -63,7 +63,7 @@ function exibirprodutos($consultaSQL)
 ?>
             <div class="produto col-6 col-md-3 m-3" id="width-20rem">
                 <img class="img-thumbnail" src="../assets/img/products/<?php echo $linha["imagem_produto"] ?>" alt="Produto 1">
-                <h3><a href="produto.php"><?php echo $linha["nome_produto"]; ?></a></h3>
+                <h3><?php echo $linha["nome_produto"]; ?></h3>
                 <p class="preco"><?php echo "R$ " . $preco; ?></p>
 
                 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
