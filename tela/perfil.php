@@ -7,9 +7,6 @@
 
     $banco = BDAcesso::getInstance();
 
-
-    //$veredito = isset($_SESSION["editar_usuario"]) ? $_SESSION["editar_usuario"] : (isset($_SESSION["nome_usuario"]) ? $_SESSION["nome_usuario"] : null);
-
     if (isset($_SESSION["editar_usuario"])) {
         $veredito = $_SESSION["editar_usuario"];
     } else {
@@ -51,7 +48,7 @@
 
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">  
+<nav class="navbar navbar-expand-lg bg-body-tertiary">  
             <div class="container-fluid">
                 <a class="navbar-brand" href="../TelaLoja/loja.php">FlyingLocation</a>                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +58,7 @@
                     <ul class="navbar-nav">
                         
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                        <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                     </li>
 
                     <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
@@ -85,6 +82,44 @@
                         <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
                     </li>
 
+                    <li class="nav-item">
+                        <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
+                            <input type = "submit" name = "quiz" class="nav-link" aria-current="page" value = "Quiz">
+                        </form>
+                    </li>
+                    <?php 
+
+                        if(isset($_POST["quiz"])){
+
+                            header("Location: ../quiz/tela_perguntas.php");
+
+                        }
+                    ?>
+
+
+                    <?php if($cargo == 'administrador'): ?>
+                    <li class="nav-item">
+
+                    <form action="loja.php" method = "post">
+
+                        <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
+
+                    </form>
+
+                    <?php
+
+                        if(isset($_POST["lista"])){
+
+                            header("Location: ../tela/lista_usuarios.php");
+
+                        }
+                    ?>
+                        
+
+                    </li>
+
+                    <?php endif; ?>
+
                     </ul>
                     
                     <?php if (!empty($imagem_pss)):?>
@@ -92,12 +127,7 @@
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-
-
                               <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
-
-
-
 
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">

@@ -137,6 +137,20 @@ function exibirprodutos($consultaSQL)
                         <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
                     </li>
 
+                    <li class="nav-item">
+                        <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
+                            <input type = "submit" name = "quiz" class="nav-link" aria-current="page" value = "Quiz">
+                        </form>
+                    </li>
+                    <?php 
+
+                        if(isset($_POST["quiz"])){
+
+                            header("Location: ../quiz/tela_perguntas.php");
+
+                        }
+                    ?>
+
 
                     <?php if($cargo == 'administrador'): ?>
                     <li class="nav-item">
@@ -168,12 +182,7 @@ function exibirprodutos($consultaSQL)
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-
-
                               <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
-
-
-
 
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">

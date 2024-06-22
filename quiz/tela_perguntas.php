@@ -1,35 +1,26 @@
 <?php
+
     session_start();
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-
-    require("../Adaptador/BDAcesso.php");
-    require("../Adaptador/CepAdaptor.php");
-
+    require("../Adaptador/BDAcesso.php"); // Dessa forma está correta.
     use padroes_projeto\Adaptador\BDAcesso;
+
+    $banco = BDAcesso::getInstance();
+
+    $numero = 1;
 
     $nome_usuario = $_SESSION["nome_usuario"];
 
-    if ($_SESSION['nome_usuario'] == null) {
-        
-        $nome_usuario = $_SESSION["nome_usuario"];
+    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
 
-    }
+    if(mysqli_num_rows($cons) > 0){
 
-    $banco = BDAcesso::getInstance();
-    $resultado_cep = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
+        $linha = mysqli_fetch_assoc($cons);
 
-    if ($resultado_cep && mysqli_num_rows($resultado_cep) > 0) {
-
-        $linha = mysqli_fetch_assoc($resultado_cep);
         $cargo = $linha["cargo"];
 
     }
-
-    $numero_pessoa = $_SESSION["numero_pessoa"];
-    $rua_pessoa = $_SESSION["rua_pessoa"];
-    $prod_nome = $_SESSION["prod_nome"];
-    $prod_preco = $_SESSION["prod_preco"];
 
 ?>
 
@@ -38,23 +29,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmação da compra</title>
+    <title>Quiz</title>
 
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
     <link rel="icon" type = "image/jpeg" href="../assets/img/personalizacao/logo_diminuida.jpeg">
 
 </head>
 <body>
-
-    <?php if($nome_usuario == null): ?>
-
-        <h1>Você tentou acessar a página da loja sem estar logado.</h1><br>
-        <a href = "../index.php">Voltar</a>
-
-    <?php else: ?>
-
+    
 <!-- ============================================================NAV BAR=================================================================================== -->
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">  
@@ -92,16 +75,13 @@
                     </li>
 
                     <li class="nav-item">
-                        <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
-                            <input type = "submit" name = "quiz" class="nav-link" aria-current="page" value = "Quiz">
-                        </form>
+                        <input type = "submit" name = "quiz" class="nav-link" aria-current="page" href = "../quiz/tela_perguntas.php" value = "Quiz">
                     </li>
                     <?php 
 
                         if(isset($_POST["quiz"])){
 
                             header("Location: ../quiz/tela_perguntas.php");
-
                         }
                     ?>
 
@@ -124,7 +104,6 @@
                         }
                     ?>
                         
-
                     </li>
 
                     <?php endif; ?>
@@ -169,19 +148,43 @@
             </div>
         </nav>
 
+
+
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-        <h1>A sua compra foi um sucesso!</h1>
+    <?php
+    
+        $numero_perg = rand(1, 100);
 
-        <h5><?php echo "O produto '$prod_nome' será enviado para a $rua_pessoa no n° $numero_pessoa por R$$prod_preco"; ?></h5>
-        <br>
+        //Ideia: criar um session para passar o valor do id da pergunta, recarregar a página, e verificar se o número é igual.
+    
+    ?>
 
-        <h4>Para voltar, clique <a href = "loja.php">aqui</a></h4>
-
-    <?php endif; ?>
+    <div class="mb-3">
+        <h4>Pergunta X</h4>
+    </div>
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+    <label class="form-check-label" for="exampleRadios1">
+        Default radio
+    </label>
+    </div>
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+    <label class="form-check-label" for="exampleRadios2">
+        Second default radio
+    </label>
+    </div>
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" disabled>
+    <label class="form-check-label" for="exampleRadios3">
+        Disabled radio
+    </label>
+    </div>
 
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
-    <script src="../assets/js/modals.js"></script>
+
+    
 </body>
 </html>

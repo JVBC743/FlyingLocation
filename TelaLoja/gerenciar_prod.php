@@ -42,7 +42,9 @@ if(mysqli_num_rows($cons) > 0){
     
     <?php else: ?>
 
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">  
+<!-- ============================================================NAV BAR=================================================================================== -->
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">  
             <div class="container-fluid">
                 <a class="navbar-brand" href="../TelaLoja/loja.php">FlyingLocation</a>                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,14 +54,14 @@ if(mysqli_num_rows($cons) > 0){
                     <ul class="navbar-nav">
                         
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                        <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                     </li>
 
                     <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
                         <li class="nav-item">
 
                         <form action = "<?php echo $_SERVER["PHP_SELF"];?>" method = "post">
-                            <input type = "submit" class="nav-link active" value = "Cadastrar Produto" name = "cad_prod">
+                            <input type = "submit" class="nav-link" value = "Cadastrar Produto" name = "cad_prod">
                         </form>
 
                         <?php 
@@ -75,6 +77,21 @@ if(mysqli_num_rows($cons) > 0){
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
                     </li>
+
+                    <li class="nav-item">
+                        <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
+                            <input type = "submit" name = "quiz" class="nav-link" aria-current="page" value = "Quiz">
+                        </form>
+                    </li>
+                    <?php 
+
+                        if(isset($_POST["quiz"])){
+
+                            header("Location: ../quiz/tela_perguntas.php");
+
+                        }
+                    ?>
+
 
                     <?php if($cargo == 'administrador'): ?>
                     <li class="nav-item">
@@ -106,12 +123,7 @@ if(mysqli_num_rows($cons) > 0){
                         <div class="dropdown">
                           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-
-
                               <img class="me-2" src="../assets/img/users/<?php echo $imagem_pss; ?>" style = "height: 50px; width: 50px;">
-
-
-
 
                           </button>
                           <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
@@ -143,6 +155,9 @@ if(mysqli_num_rows($cons) > 0){
                 </div>
             </div>
         </nav>
+
+<!-- ============================================================NAV BAR=================================================================================== -->
+
 
 
     <div class="center">
@@ -263,8 +278,8 @@ if(mysqli_num_rows($cons) > 0){
 
                                                 $inst = $banco->inserirDados("produtos", "'$nome', $preco, $quant, '$fabri', '$data', $garan, '$descri', '$fileName'", "nome_produto, preco, quantidade, fornecedor, fabricacao, garantia, descricao, imagem_produto");
                                                     
-                                                if(!$inst){
-                                                    echo "Dados cadastrados com sucesso!";
+                                                if($inst){
+                                                    echo "Dados cadastrados com sucesso!<br>";
                                                 }else{
                                                     echo "Houve algum erro no processo de cadastramento.";
                                                 }

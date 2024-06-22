@@ -72,7 +72,7 @@
 <h5>Acreditamos que a tecnologia pode transformar vidas, e é por isso que estamos sempre buscando inovações que melhorem a experiência de compra dos nossos usuários. Nossa visão é sermos reconhecidos como uma referência no comércio eletrônico, sendo lembrados pela excelência em atendimento e pela diversidade de produtos oferecidos.</h5>
 
 <h2>Valores</h2>
-<h5>Integridade: Atuamos com honestidade duvidosa e antiética em todas as nossas interações.</h5>
+<h5>Integridade: Atuamos com honestidade e ética em todas as nossas interações.</h5>
 
 
 <h5>Qualidade: Comprometemo-nos a oferecer produtos e serviços que superem as expectativas dos nossos clientes.</h5>
@@ -83,7 +83,7 @@
 
 <h2>Entre em Contato</h2>
 
-<h5>E-mails: João Victor: joaovictor.brumc@gmail.com<br>José Claion: ---------</h5>
+<h5>E-mails: João Victor: joaovictor.brumc@gmail.com<br>José Claion: Joseclaionmartins@gmail.com</h5>
 
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>

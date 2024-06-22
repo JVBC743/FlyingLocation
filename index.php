@@ -11,7 +11,6 @@
 
     $cons2 = $banco->buscaSQL("*", "produtos");
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,13 +52,12 @@
                     <input type="submit" class="botao" value="Comprar Agora" name="comprar_<?php echo $i; ?>">
                 </form>
                 <?php
-
-                    if(isset($_POST["comprar_$i"])){
-
-                        header("Location: tela/login.php");
-                    }
-
                 $i++;
+
+                if(isset($_POST["comprar_$i"])){
+
+                    header("Location: tela/login.php");
+                }
                 ?>
             </div>
 <?php
@@ -67,10 +65,7 @@
     }
 }
 
-    
-
 ?>
-
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">FlyingLocation</a>
@@ -159,12 +154,6 @@
             </div>
         <?php endif; ?>
 
-        <!-- <h5 class="homepage">Autores: João Victor Brum de Castro e José Claion --sobrenome--</h5>
-        <h5 class="homepage">E-mails:<br>
-        joaovictor.brumc@gmail.com<br>
-        claionviado@gaymail.com<br>
-        </h5> -->
-    
     <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
     <script src="assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
     </body>
