@@ -25,7 +25,7 @@
         </div>
         <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
             <div class="login">
-                <label class="form-label">Nome de Usuário</label>
+                <label class="form-label">E-mail de usuário</label>
                 <input class="form-control" name = "email" type="text" placeholder="E-mail">
                 <label class="form-label">Senha</label>
                 <input class="form-control" name = "senha_usuario" type="password" placeholder="Senha"><br>

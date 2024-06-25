@@ -11,6 +11,27 @@
 
     $cons2 = $banco->buscaSQL("*", "produtos");
 
+    $pegar_data = $banco->buscaSQL("*", "usuarios_temporarios");
+
+    if(mysqli_num_rows($pegar_data) > 0){  
+
+        while($lin_temp = mysqli_fetch_assoc($pegar_data)){
+
+            $data_limite = $lin_temp["data_expiracao"];
+
+            $data_atual = new DateTime();
+        
+            $data_expiracao = new DateTime($data_limite);
+
+            if($data_atual > $data_expiracao){
+
+                $data_expiracao_formatada = $data_expiracao->format('Y-m-d H:i:s');
+
+                $apagar_temp = $banco->excluirDados("usuarios_temporarios", "WHERE", "'$data_expiracao_formatada' < NOW()");
+            }
+        }
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,15 +70,15 @@
 
                 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <input type="hidden" name="nome_produto" value="<?php echo $linha["nome_produto"]; ?>">
-                    <input type="submit" class="botao" value="Comprar Agora" name="comprar_<?php echo $i; ?>">
+                    <a class="botao" href = "tela/login.php" style = "color: white">Comprar Agora</a>
                 </form>
                 <?php
                 $i++;
 
-                if(isset($_POST["comprar_$i"])){
+                // if(isset($_POST["comprar_$i"])){
 
-                    header("Location: tela/login.php");
-                }
+                //     header("Location: tela/login.php");
+                // }
                 ?>
             </div>
 <?php
