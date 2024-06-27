@@ -29,27 +29,39 @@
 
     }
 
-    $cons_pergunta_alternativa = $banco->buscaSQL("*", "perguntas_alternativas");
 
-    if($cons_pergunta_alternativa && mysqli_num_rows($cons_pergunta_alternativa) > 0){
-    //Procurar a pergunta pelo ID
 
-        $linha2 = mysqli_fetch_assoc($cons_pergunta_alternativa);
-        $id_pergunta = $linha2["id_pergunta"];
+    
+    $cons_pergunta = $banco->buscaSQL("*", "perguntas");
+
+    if($cons_pergunta){
+
+        $num_linhas = mysqli_num_rows($cons_pergunta);
     }
 
-    $cons_pergunta = $banco->buscaSQL("enunciado", "perguntas", "WHERE", "id_pergunta = $id_pergunta");
+    $numero_perg = rand(1, $num_linhas);
+
+    $cons_pergunta2 = $banco->buscaSQL("enunciado", "perguntas", "WHERE", "id_pergunta = $numero_perg");
+
+    if(mysqli_num_rows($cons_pergunta2) == 0) {
+        header("Refresh: 0");
+    }
     //Procurar o enunciado pelo ID
 
-    if($cons_pergunta && mysqli_num_rows($cons_pergunta) > 0){
+    if($cons_pergunta2 && mysqli_num_rows($cons_pergunta2) > 0){
 
-        $linha4 = mysqli_fetch_assoc($cons_pergunta);
+        $linha4 = mysqli_fetch_assoc($cons_pergunta2);
         $enunciado = $linha4["enunciado"];
     }
 
-    $cons_id_alternativa = $banco->buscaSQL("id_alternativa", "perguntas_alternativas", "WHERE", "id_pergunta = $id_pergunta");
+   
+
+    $cons_id_alternativa = $banco->buscaSQL("id_alternativa", "perguntas_alternativas", "WHERE", "id_pergunta = $numero_perg");
 
     //Procurar os IDs das alternativas.
+
+    
+    
 
 
     if(isset($_POST["cadastro_perguntas"])){
@@ -162,12 +174,21 @@
     
 
     <div class="mb-3">
-        <h4><?php echo $enunciado ?></h4>
+        <h4><?php 
+        
+        if(empty($enunciado)){
+
+            echo "Pergunta não encontrada.";
+
+        }else{
+
+            echo $enunciado;
+
+        } ?></h4>
     </div>
 
     <?php
 
-    //$numero_perg = rand(1, 100);
 
     //Ideia: criar um session para passar o valor do id da pergunta, recarregar a página, e verificar se o número é igual.
 
@@ -204,7 +225,7 @@
             }
         }
     ?>
-
+                            <br>
                             <input type="submit" name = "enviar_pergunta" class="btn btn-success">
 
                         </form>

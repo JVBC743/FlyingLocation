@@ -137,7 +137,19 @@
         <input type="text" name = "enunciado" required> 
         <br><br>
         <label for="categoria">Categoria</label>
-        <input type="text" name="categoria"required> 
+        <!-- <input type="text" name="categoria"required>  -->
+
+        <select name="categoria">
+
+            <option value="Matemática">Matemática</option>
+            <option value="História">História</option>
+            <option value="Ciência">Ciência</option>
+            <option value="Geografia">Geografia</option>
+            <option value="Cultura">Cultura</option>
+            <option value="Literatura">Literatura</option>
+
+
+        </select>
         <br>
         <label for="alternativa1">Alternativa 1</label>
         <input type="text" name="alternativa1"required> 
