@@ -8,7 +8,7 @@ class BDAcesso{
     private $banco_usuario = "jvbc";
     private $banco_senha = "4426655xara";
     private $banco_nome = "FlyLoc";
-    private $conexao;
+    public $conexao;
     private static $instancia;
 
     private function __construct(){

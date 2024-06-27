@@ -8,8 +8,6 @@
 
     $banco = BDAcesso::getInstance();
 
-    $numero = 1;
-
     if(isset($_SESSION["nome_usuario"])){
 
         $nome_usuario = $_SESSION["nome_usuario"];
@@ -23,50 +21,27 @@
 
     if(mysqli_num_rows($cons) > 0){
 
-        $linha1 = mysqli_fetch_assoc($cons);
-        $cargo = $linha1["cargo"];
-        $imagem_pss = $linha1["imagem_pessoa"];
+        $linha = mysqli_fetch_assoc($cons);
+        $cargo = $linha["cargo"];
+        $imagem_pss = $linha["imagem_pessoa"];
 
     }
-
-    $cons_pergunta_alternativa = $banco->buscaSQL("*", "perguntas_alternativas");
-
-    if($cons_pergunta_alternativa && mysqli_num_rows($cons_pergunta_alternativa) > 0){
-    //Procurar a pergunta pelo ID
-
-        $linha2 = mysqli_fetch_assoc($cons_pergunta_alternativa);
-        $id_pergunta = $linha2["id_pergunta"];
-    }
-
-    $cons_pergunta = $banco->buscaSQL("enunciado", "perguntas", "WHERE", "id_pergunta = $id_pergunta");
-    //Procurar o enunciado pelo ID
-
-    if($cons_pergunta && mysqli_num_rows($cons_pergunta) > 0){
-
-        $linha4 = mysqli_fetch_assoc($cons_pergunta);
-        $enunciado = $linha4["enunciado"];
-    }
-
-    $cons_id_alternativa = $banco->buscaSQL("id_alternativa", "perguntas_alternativas", "WHERE", "id_pergunta = $id_pergunta");
-
-    //Procurar os IDs das alternativas.
-
-
-    if(isset($_POST["cadastro_perguntas"])){
-
-        header("Location: cadastro_perguntas.php");
-
-    }
+    
 ?>
+
+    <?php if($nome_usuario == null): ?>
+
+    <h1>Você tentou acessar a página da loja sem estar logado.</h1><br>
+    <a href = "../index.php">Voltar</a>
+
+    <?php else: ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Quiz</title>
+    <title>Document</title>
 
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
@@ -74,13 +49,6 @@
 
 </head>
 <body>
-
-    <?php if($nome_usuario == null): ?>
-
-        <h1>Você tentou acessar a página da loja sem estar logado.</h1><br>
-        <a href = "../index.php">Voltar</a>
-
-    <?php else: ?>
 
 <!-- ============================================================NAV BAR=================================================================================== -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">  
@@ -158,106 +126,132 @@
     </nav>
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-    
-    
-
-    <div class="mb-3">
-        <h4><?php echo $enunciado ?></h4>
-    </div>
-
-    <?php
-
-    //$numero_perg = rand(1, 100);
-
-    //Ideia: criar um session para passar o valor do id da pergunta, recarregar a página, e verificar se o número é igual.
-
-        if($cons_id_alternativa && mysqli_num_rows($cons_id_alternativa) > 0){
-
-            while($linha5 = mysqli_fetch_assoc($cons_id_alternativa)){
-
-                $id_alternativa = $linha5["id_alternativa"];
-
-                $cons_alternativa = $banco->buscaSQL("*", "alternativas", "WHERE", "id_alternativa = $id_alternativa");
-                //Procurando as descrições das alternativas
-
-                if($cons_alternativa && mysqli_num_rows($cons_alternativa) > 0){
-
-                    $linha6 = mysqli_fetch_assoc($cons_alternativa);
-
-                    $descricao = $linha6['descricao'];
-    ?>
-                    <div class="form-check">
-
-                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
-
-                            <input class="form-check-input" type="radio" name="alternativa" value="<?php echo $descricao; ?>">
-                            <label class="form-check-label" for="alternativa_<?php echo $descricao; ?>">
+            
 
 
-                            <?php echo $descricao; ?>
+    <h1>Você abriu a tela de cadastro de perguntas.</h1>
 
-                        </label>
-                    </div>
-    <?php
+    <form action="cadastro_perguntas.php" method = "POST">
 
-                }
-            }
-        }
-    ?>
+        <label for="enunciado">Enunciado da pergunta</label>
+        <input type="text" name = "enunciado" required> 
+        <br><br>
+        <label for="categoria">Categoria</label>
+        <input type="text" name="categoria"required> 
+        <br>
+        <label for="alternativa1">Alternativa 1</label>
+        <input type="text" name="alternativa1"required> 
+        <br>
+        <label for="alternativa2">Alternativa 2</label>
+        <input type="text" name="alternativa2" required> 
+        <br>
+        <label for="alternativa3">Alternativa 3</label>
+        <input type="text" name="alternativa3" required>
+        <br>
+        <label for="alternativa4">Alternativa 4</label>
+        <input type="text" name="alternativa4" required>
+        <br><br>
 
-                            <input type="submit" name = "enviar_pergunta" class="btn btn-success">
-
-                        </form>
-    
-    <?php
- 
-        if(isset($_POST["enviar_pergunta"])){
-
-            if(isset($_POST["alternativa"])){
-
-                $alt_escolhida = $_POST["alternativa"];
-
-                $cons_resposta = $banco->buscaSQL("*", "alternativas", "WHERE", "descricao = '$alt_escolhida'");
-
-                if($cons_resposta && mysqli_num_rows($cons_resposta) > 0){
-                    $linha7 = mysqli_fetch_assoc($cons_resposta);
-
-                    $verdadeiro = $linha7["verdadeiro"];
-                
-                }
-
-                if($verdadeiro == 1){
-
-                    echo "<br>Parabens, você acertou!";
-
-                }else{
-
-                    echo "<br>Errrrouuuu!";
-
-                }
-            }else{
-
-                echo "<br>Escolha uma das perguntas.";
-            }
-        }
-    ?>
+        <label for="pontuacao">Pontuação</label>
+        <input type="text" name = "pontuacao" required> 
 
         <br><br>
 
-        <?php if($cargo == "administrador"):  ?>
+        <h3>Qual das alternativas é a correta?</h3>
 
-            <form action="<?php $_SERVER["PHP_SELF"] ?>" method = "POST">
+        <input type="radio" name="alts" value = "1" required>
+        <label for="alts">1</label><br>
+        <input type="radio" name="alts" value = "2">
+        <label for="alts">2</label><br>
+        <input type="radio" name="alts" value = "3">
+        <label for="alts">3</label><br>
+        <input type="radio" name="alts" value = "4">
+        <label for="alts">4</label><br>
+        <br>
 
-                <input type = "submit" name = "cadastro_perguntas" class="btn btn-success" style = "background-color: blue" value = "Abrir Tela de Cadastro de Perguntas">
+        <input type="submit" name = "botao_cadastro_pergunta">
 
-            </form>
+    </form>
+
+    <?php 
+if(isset($_POST["botao_cadastro_pergunta"])){
+    if(isset($_POST["categoria"]) && !empty($_POST["categoria"])){
+        if(isset($_POST["alternativa1"]) && !empty($_POST["alternativa1"])){
+            if(isset($_POST["alternativa2"]) && !empty($_POST["alternativa2"])){
+                if(isset($_POST["alternativa3"]) && !empty($_POST["alternativa3"])){
+                    if(isset($_POST["alternativa4"]) && !empty($_POST["alternativa4"])){
+
+                        $enunciado = $_POST["enunciado"];
+                        $categoria = $_POST["categoria"];
+                        $alt1 = $_POST["alternativa1"];
+                        $alt2 = $_POST["alternativa2"];
+                        $alt3 = $_POST["alternativa3"];
+                        $alt4 = $_POST["alternativa4"];
+                        $pontuacao = $_POST["pontuacao"];
+
+                        if(isset($_POST["alts"])){
+                            
+                            $caixa_marcada = $_POST["alts"];
+
+                            $verdadeiro1 = ($caixa_marcada == 1) ? 1 : 0;
+                            $verdadeiro2 = ($caixa_marcada == 2) ? 1 : 0;
+                            $verdadeiro3 = ($caixa_marcada == 3) ? 1 : 0;
+                            $verdadeiro4 = ($caixa_marcada == 4) ? 1 : 0;
+
+                            $ins1 = $banco->inserirDados("perguntas", "'$categoria', $pontuacao, '$enunciado'", "categoria, pontuacao, enunciado" );
+
+                            if($ins1){
+
+                                $id_pergunta = mysqli_insert_id($banco->conexao);
+
+                                $ins2 = $banco->inserirDados("alternativas", "'$alt1', $verdadeiro1", "descricao, verdadeiro");
+                                $ins3 = $banco->inserirDados("alternativas", "'$alt2', $verdadeiro2", "descricao, verdadeiro");
+                                $ins4 = $banco->inserirDados("alternativas", "'$alt3', $verdadeiro3", "descricao, verdadeiro");
+                                $ins5 = $banco->inserirDados("alternativas", "'$alt4', $verdadeiro4", "descricao, verdadeiro");
+
+                                if($ins2 && $ins3 && $ins4 && $ins5){
 
 
+                                    $id_alt1 = mysqli_insert_id($banco->conexao);
+                                    $ins6 = $banco->inserirDados("perguntas_alternativas", "'$id_pergunta', $id_alt1", "id_pergunta, id_alternativa");
 
-        <?php endif; ?>
-    <?php endif; ?>
-        
+                                    $id_alt2 = mysqli_insert_id($banco->conexao);
+                                    $ins7 = $banco->inserirDados("perguntas_alternativas", "'$id_pergunta', '$id_alt2'", "id_pergunta, id_alternativa");
+
+                                    $id_alt3 = mysqli_insert_id($banco->conexao);
+                                    $ins8 = $banco->inserirDados("perguntas_alternativas", "'$id_pergunta', '$id_alt3'", "id_pergunta, id_alternativa");
+
+                                    $id_alt4 = mysqli_insert_id($banco->conexao);
+                                    $ins9 = $banco->inserirDados("perguntas_alternativas", "'$id_pergunta', '$id_alt4'", "id_pergunta, id_alternativa");
+
+                                    if($ins6 && $ins7 && $ins8 && $ins9){
+
+                                        echo "Pergunta e alternativas inseridas com sucesso!";
+
+                                    } else {
+
+                                        echo "Erro ao inserir as alternativas.";
+                                    }
+                                } else {
+
+                                    echo "Erro ao inserir as alternativas.";
+                                }
+                            } else {
+
+                                echo "Erro ao inserir a pergunta.";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+?>
+
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
+
+<?php endif; ?>
