@@ -75,6 +75,96 @@
     $cep_teste->lerCEP($cep_pessoa);
     $cep_teste->adaptarJson($cliente);
     $logradouro = $cliente->logradouro;
+    $estado = $cliente->uf;
+
+    switch($estado) {
+        case 'AC':
+            $estado = "Acre";
+            break;
+        case 'AL':
+            $estado = "Alagoas";
+            break;
+        case 'AP':
+            $estado = "Amapá";
+            break;
+        case 'AM':
+            $estado = "Amazonas";
+            break;
+        case 'BA':
+            $estado = "Bahia";
+            break;
+        case 'CE':
+            $estado = "Ceará";
+            break;
+        case 'DF':
+            $estado = "Distrito Federal";
+            break;
+        case 'ES':
+            $estado = "Espírito Santo";
+            break;
+        case 'GO':
+            $estado = "Goiás";
+            break;
+        case 'MA':
+            $estado = "Maranhão";
+            break;
+        case 'MT':
+            $estado = "Mato Grosso";
+            break;
+        case 'MS':
+            $estado = "Mato Grosso do Sul";
+            break;
+        case 'MG':
+            $estado = "Minas Gerais";
+            break;
+        case 'PA':
+            $estado = "Pará";
+            break;
+        case 'PB':
+            $estado = "Paraíba";
+            break;
+        case 'PR':
+            $estado = "Paraná";
+            break;
+        case 'PE':
+            $estado = "Pernambuco";
+            break;
+        case 'PI':
+            $estado = "Piauí";
+            break;
+        case 'RJ':
+            $estado = "Rio de Janeiro";
+            break;
+        case 'RN':
+            $estado = "Rio Grande do Norte";
+            break;
+        case 'RS':
+            $estado = "Rio Grande do Sul";
+            break;
+        case 'RO':
+            $estado = "Rondônia";
+            break;
+        case 'RR':
+            $estado = "Roraima";
+            break;
+        case 'SC':
+            $estado = "Santa Catarina";
+            break;
+        case 'SP':
+            $estado = "São Paulo";
+            break;
+        case 'SE':
+            $estado = "Sergipe";
+            break;
+        case 'TO':
+            $estado = "Tocantins";
+            break;
+        default:
+            $estado = "Estado desconhecido";
+            break;
+    }
+
+    echo $estado;
 
     if (isset($_POST["confirmar_compra"])) {
 
@@ -170,14 +260,14 @@
                                     if(isset($_POST["cad_prod"])){
                                         
                                         $_SESSION["nome_usuario"];                                 
-                                        header("Location: ../TelaLoja/gerenciar_prod.php");
+                                        header("Location: ../TelaLoja/cad_geren_prod.php");
                                     }
                             ?>
                             </li>     
                         <?php endif;?>  
 
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
+                            <a class="nav-link" aria-current="page" href = "../TelaLoja/lista_produtos.php">Meus Produtos</a>
                         </li>
 
                         <li class="nav-item">

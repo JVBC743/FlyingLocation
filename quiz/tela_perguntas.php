@@ -115,14 +115,14 @@
                                     if(isset($_POST["cad_prod"])){
                                         
                                         $_SESSION["nome_usuario"];                                 
-                                        header("Location: ../TelaLoja/gerenciar_prod.php");
+                                        header("Location: ../TelaLoja/cad_geren_prod.php");
                                     }
                             ?>
                             </li>     
                         <?php endif;?>  
 
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
+                            <a class="nav-link" aria-current="page" href = "../TelaLoja/lista_produtos.php">Meus Produtos</a>
                         </li>
 
                         <li class="nav-item">
