@@ -29,7 +29,7 @@
         $credito = $linha1["credito"];
 
     }
-    
+
     $cons_pergunta = $banco->buscaSQL("*", "perguntas");
 
     if($cons_pergunta){
@@ -39,7 +39,7 @@
 
     $numero_perg = rand(1, $num_linhas);
 
-    $cons_pergunta2 = $banco->buscaSQL("enunciado", "perguntas", "WHERE", "id_pergunta = $numero_perg");
+    $cons_pergunta2 = $banco->buscaSQL("*", "perguntas", "WHERE", "id_pergunta = $numero_perg");
 
     if(mysqli_num_rows($cons_pergunta2) == 0) {
         header("Refresh: 0");
@@ -50,6 +50,7 @@
 
         $linha4 = mysqli_fetch_assoc($cons_pergunta2);
         $enunciado = $linha4["enunciado"];
+        $pontuacao = $linha4["pontuacao"];
     }
 
    
@@ -57,10 +58,6 @@
     $cons_id_alternativa = $banco->buscaSQL("id_alternativa", "perguntas_alternativas", "WHERE", "id_pergunta = $numero_perg");
 
     //Procurar os IDs das alternativas.
-
-    
-    
-
 
     if(isset($_POST["cadastro_perguntas"])){
 
@@ -215,10 +212,6 @@
 
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-
-    
-    
-
     <div class="mb-3">
         <h4><?php 
         
@@ -228,7 +221,7 @@
 
         }else{
 
-            echo $enunciado;
+            echo $enunciado ." - " .  $pontuacao . "pts";
 
         } ?></h4>
     </div>
@@ -295,7 +288,13 @@
 
                 if($verdadeiro == 1){
 
-                    echo "<br>Parabens, você acertou!";
+                    echo "<br>Parabens, você acertou, ganhaste $pontuacao pontos";
+
+                    $soma_credito = $credito + $pontuacao;
+
+
+
+                    $banco->atualizarDados("usuarios","credito = $soma_credito", "WHERE", "nome = '$nome_usuario'");
 
                 }else{
 

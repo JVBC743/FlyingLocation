@@ -39,6 +39,7 @@
 
     $cons2 = $banco->buscaSQL("*", "produtos");
 
+    
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +62,9 @@ function exibirprodutos($consultaSQL)
         while (($linha = mysqli_fetch_assoc($consultaSQL))) {
             $preco = str_replace(".",",", $linha["preco"]);
 
-?>
+?>      
+        <?php if($linha["quantidade"] > 0): ?>
+
             <div class="produto col-6 col-md-3 m-3" id="width-20rem">
                 <img class="img-thumbnail" src="../assets/img/products/<?php echo $linha["imagem_produto"] ?>" alt="Produto 1">
                 <h3><?php echo $linha["nome_produto"]; ?></h3>
@@ -75,6 +78,8 @@ function exibirprodutos($consultaSQL)
                 $i++;
                 ?>
             </div>
+
+        <?php endif; ?>
 <?php
         }
     }

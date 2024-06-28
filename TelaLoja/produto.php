@@ -37,7 +37,6 @@
         $cargo = $linha["cargo"];
         $credito = $linha["credito"];
 
-
     }
 
 
@@ -50,6 +49,7 @@
         if ($resul && mysqli_num_rows($resul) > 0) {
             $linha = mysqli_fetch_assoc($resul);
             $img_prod = $linha["imagem_produto"];
+            $quantidade = $linha["quantidade"];
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
             
@@ -60,6 +60,33 @@
     $cep_teste->lerCEP($cep_pessoa);
     $cep_teste->adaptarJson($cliente);
     $logradouro = $cliente->logradouro;
+
+    if (isset($_POST["confirmar_compra"])) {
+
+        if($credito < $prod_preco){
+
+            echo "<script>window.alert('Você não tem grana para isso.')</script>";
+
+        }elseif(isset($_POST["numero"]) && !empty($_POST["numero"]) && isset($_POST["rua"]) && !empty($_POST["rua"])) {
+
+            $subtracao = $credito - $prod_preco;
+            $quantidade--;
+
+            $banco->atualizarDados("produtos", "quantidade = $quantidade", "WHERE", "nome_produto = '$nome_produto'");
+
+            $banco->atualizarDados("usuarios","credito = $subtracao", "WHERE", "nome = '$nome_usuario'");
+
+            $_SESSION["numero_pessoa"] = $_POST["numero"];
+            $_SESSION["rua_pessoa"] = $_POST["rua"];
+
+            header("Location: confirmacao.php");
+
+            exit(); 
+
+        } else {
+            echo "Rua ou número não definidos.";
+        }
+    }
 
 ?>
 <!DOCTYPE html>
@@ -329,19 +356,3 @@
 </body>
 </html>
 
-<?php
-
-    if (isset($_POST["confirmar_compra"])) {
-        if (isset($_POST["numero"]) && !empty($_POST["numero"]) && isset($_POST["rua"]) && !empty($_POST["rua"])) {
-
-            $_SESSION["numero_pessoa"] = $_POST["numero"];
-            $_SESSION["rua_pessoa"] = $_POST["rua"];
-
-            header("Location: confirmacao.php");
-
-            exit(); 
-        } else {
-            echo "Rua ou número não definidos.";
-        }
-    }
-?>
