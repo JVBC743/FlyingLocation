@@ -101,7 +101,7 @@
                     <ul class="navbar-nav">
                         
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                            <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                         </li>
 
                         <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
@@ -127,7 +127,7 @@
 
                         <li class="nav-item">
                             <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
-                                <input type = "submit" name = "quiz" class="nav-link" aria-current="page" value = "Quiz">
+                                <input type = "submit" name = "quiz" class="nav-link active" aria-current="page" value = "Quiz">
                             </form>
                         </li>
                         <?php 
@@ -212,7 +212,7 @@
 
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-    <div class="mb-3">
+    <div class="mb-3" style = "margin: 20px;">
         <h4><?php 
         
         if(empty($enunciado)){
@@ -221,10 +221,9 @@
 
         }else{
 
-            echo $enunciado ." - " .  $pontuacao . "pts";
+            echo $enunciado;
 
         } ?></h4>
-    </div>
 
     <?php
 
@@ -250,8 +249,11 @@
 
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
 
-                            <input class="form-check-input" type="radio" name="alternativa" value="<?php echo $descricao; ?>">
-                            <label class="form-check-label" for="alternativa_<?php echo $descricao; ?>">
+                        
+                                <input class="form-check-input" type="radio" name="alternativa" value="<?php echo $descricao; ?>" >
+                                <label class="form-check-label" for="alternativa_<?php echo $descricao; ?>">
+                            
+                            
 
 
                             <?php echo $descricao; ?>
@@ -321,6 +323,8 @@
 
 
         <?php endif; ?>
+        </div>
+
     <?php endif; ?>
         
     <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>

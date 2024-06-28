@@ -42,7 +42,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cadastrar Perguntas</title>
 
     <link rel="stylesheet" href="../assets/bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/css/basic.css">
@@ -63,7 +63,7 @@
                     <ul class="navbar-nav">
                         
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                            <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                         </li>
 
                         <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
@@ -89,7 +89,7 @@
 
                         <li class="nav-item">
                             <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
-                                <input type = "submit" name = "quiz" class="nav-link" aria-current="page" value = "Quiz">
+                                <input type = "submit" name = "quiz" class="nav-link active" aria-current="page" value = "Quiz">
                             </form>
                         </li>
                         <?php 

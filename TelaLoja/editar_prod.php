@@ -89,7 +89,7 @@
                     <ul class="navbar-nav">
                         
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                            <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                         </li>
 
                         <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
@@ -110,7 +110,7 @@
                         <?php endif;?>  
 
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
+                            <a class="nav-link active" aria-current="page" href = "../TelaLoja/editar_prod.php">Meus Produtos</a>
                         </li>
 
                         <li class="nav-item">

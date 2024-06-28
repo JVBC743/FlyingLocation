@@ -76,7 +76,7 @@
                     <ul class="navbar-nav">
                         
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                            <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                         </li>
 
                         <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
@@ -120,7 +120,7 @@
 
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
 
-                            <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link" aria-current="page" value = "Lista de Usuários" name = "lista">
+                            <input type = "submit" href = "../tela/lista_usuarios.php" class="nav-link active" aria-current="page" value = "Lista de Usuários" name = "lista">
 
                         </form>
 

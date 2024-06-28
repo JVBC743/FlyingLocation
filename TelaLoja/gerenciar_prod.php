@@ -56,14 +56,14 @@ if(mysqli_num_rows($cons) > 0){
                     <ul class="navbar-nav">
                         
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
+                            <a class="nav-link" aria-current="page" href="../TelaLoja/loja.php">Loja</a>
                         </li>
 
                         <?php if($cargo == 'administrador' || $cargo == 'fornecedor'):?>
                             <li class="nav-item">
 
                             <form action = "<?php echo $_SERVER["PHP_SELF"];?>" method = "post">
-                                <input type = "submit" class="nav-link" value = "Cadastrar Produto" name = "cad_prod">
+                                <input type = "submit" class="nav-link active" value = "Cadastrar Produto" name = "cad_prod">
                             </form>
 
                             <?php 
