@@ -50,11 +50,26 @@
             $linha = mysqli_fetch_assoc($resul);
             $img_prod = $linha["imagem_produto"];
             $quantidade = $linha["quantidade"];
+            $cadastrador = $linha["cadastrador"];
+            $fornecedor = $linha["fornecedor"];
+            $garantia = $linha["garantia"];
+            
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
             
 
         }
+    }
+
+    $cont_cadastrador = $banco->buscaSQL("email", "usuarios", "WHERE", "nome = '$cadastrador'");
+
+    if($cont_cadastrador && mysqli_num_rows($cont_cadastrador) > 0){
+
+        $linha1 = mysqli_fetch_assoc($cont_cadastrador);
+
+        $contato_cadastrador = $linha1["email"];
+
+
     }
 
     $cep_teste->lerCEP($cep_pessoa);
@@ -255,6 +270,17 @@
         <h1 style = "margin: 20px; "><?php echo $prod_nome; ?></h1>
         <img src="../assets/img/products/<?php echo $img_prod; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
         <p style = "margin: 30px"><?php echo "Preço: R$" . $prod_preco; ?></p>
+
+        <p style = "margin: 30px"> <?php echo "Garantia: " . $garantia . " dias."; ?></p>
+        <!-- adicionar garantia em formato de ano, mes, dias. -->
+
+
+        <p style = "margin: 30px"> <?php echo "Fornecedor(a): " . $fornecedor; ?></p>
+
+        <p style = "margin: 30px"> <?php echo "Cadastrador: " . $cadastrador; ?></p>
+
+        <p style = "margin: 30px"> <?php echo "Contato do cadastrador: " . $contato_cadastrador; ?></p>
+
 
         <form action = "produto.php" method="post">
 

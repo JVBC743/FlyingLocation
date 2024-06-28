@@ -94,7 +94,6 @@ if(mysqli_num_rows($cons) > 0){
                             }
                         ?>
 
-
                         <?php if($cargo == 'administrador'): ?>
                         <li class="nav-item">
 
@@ -166,8 +165,6 @@ if(mysqli_num_rows($cons) > 0){
         </nav>
 
 <!-- ============================================================NAV BAR=================================================================================== -->
-
-
 
     <div class="center">
         <h1>Tela de cadastramento de produtos</h1>
@@ -285,7 +282,7 @@ if(mysqli_num_rows($cons) > 0){
                                                 //O "inserirDados()" é do tipo "void", então seria interessante apenas chamar esse método sozinho.
                                                 //Sem atribuir à nenhuma variável. Ou, então, aplicar algum retorno à esse método.
 
-                                                $inst = $banco->inserirDados("produtos", "'$nome', $preco, $quant, '$fabri', '$data', $garan, '$descri', '$fileName'", "nome_produto, preco, quantidade, fornecedor, fabricacao, garantia, descricao, imagem_produto");
+                                                $inst = $banco->inserirDados("produtos", "'$nome', $preco, $quant, '$fabri', '$nome_usuario', '$data', $garan, '$descri', '$fileName'", "nome_produto, preco, quantidade, fornecedor, cadastrador, fabricacao, garantia, descricao, imagem_produto");
                                                     
                                                 if($inst){
                                                     echo "Dados cadastrados com sucesso!<br>";
