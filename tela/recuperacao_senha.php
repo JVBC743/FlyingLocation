@@ -4,13 +4,16 @@
 
     require '../email/vendor/autoload.php';
     require '../Adaptador/BDAcesso.php';// Dessa forma está correta.
+    require ("../classes/Email.php");
+
     
     use padroes_projeto\Adaptador\BDAcesso;
     use PHPMailer\PHPMailer\PHPMailer;
+    use email\Email;
 
     $banco_rec = BDAcesso::getInstance();
 
-    $mail = new PHPMailer(true);
+    $envio_email = new Email();
 
 ?>
 <!DOCTYPE html>
@@ -74,51 +77,46 @@
 
                 if ($insercao) {
 
-                    echo "Token gerado com sucesso!<br>";
+                    echo "<script>window.alert('Token gerado com sucesso!')</script>";
 
                 } else {
 
-                    echo "Deu ruim no Token";
+                    echo "<script>window.alert('Deu ruim no token')</script>";
 
                 }
 
                 echo "O seu e-mail está cadastrado no sistema!<br>";
 
-                $mail->isSMTP();
-                $mail->Host = 'smtp.office365.com';
-                $mail->SMTPAuth = true;
-                $mail->SMTPSecure = 'tls';
-                $mail->Username = 'flyinglocation2902@outlook.com';
-                $mail->Password = 'FlyLoc@2902';
-                $mail->Port = 587;
+                $assunto = "Alteração de senha - FlyingLocation";
 
-                $mail->setFrom('flyinglocation2902@outlook.com', 'JVBC/JCMS Co.');
-                $mail->addAddress($email_verificado);
-
-                $mail->isHTML(true);
-
-                $mail->Subject = "Alteração de senha - FlyingLocation";
-
-                $link_recuperacao = 'http://201.2.18.191:2222/FlyingLocation/tela/pegar_token.php?token=' . $token;
-
-                $mail->Body = nl2br("Olá, foi solicitado a mudança de senha para a conta que possui este e-mail vinculado no nosso site FlyingLocation. <br> 
+                $conteudo = "Olá, foi solicitado a mudança de senha para a conta que possui este e-mail vinculado no nosso site FlyingLocation. <br> 
                 Se você não solicitou nenhum tipo de recuperação de senha para esta conta, por favor, ignore este e-mail. <br><br>
-                Caso queira alterar a sua senha, <a href = '$link_recuperacao'>clique aqui</a>");
+                Caso queira alterar a sua senha, ";
 
-                $mail->AltBody = nl2br(strip_tags("Mudança de senha."));
+                $alt = "Olá, foi solicitado a mudança de senha para a conta que possui este e-mail vinculado no nosso site FlyingLocation. <br> 
+                Se você não solicitou nenhum tipo de recuperação de senha para esta conta, por favor, ignore este e-mail. <br><br>
+                Caso queira alterar a sua senha, ";
 
-                if(!$mail->send()) {
-                    echo 'Não foi possível enviar a mensagem.';
-                    echo 'Erro: ' . $mail->ErrorInfo;
-                } else {
-                    echo "E-mail enviado com sucesso!!!<br>";
+                echo "<script>window.alert('Cheguei aqui1')</script>";
+
+                $envio = $envio_email->emailGenerico($assunto, $conteudo, $alt, $email, "token", $id_usuario);
+
+                echo "<script>window.alert('Cheguei aqui2')</script>";
+
+                if($envio == false){
+
+                    echo "<script>window.alert('Houve um erro no envio do e-mail')</script>";
+
+                }else{
+
+                    echo "E-mail enviado com sucesso!";
                 }
 
             }else{
-                echo "O seu e-mail não foi encontrado no banco de dados.";
+                echo "<script>window.alert('E-mail não encontrado no banco de dados')</script>";
             }
         }else{
-            echo "E-mail não inserido";
+            echo "<script>window.alert('E-mail não inserido')</script>";
         }
     }
 ?>

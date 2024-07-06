@@ -12,20 +12,28 @@
 
     $banco = BDAcesso::getInstance();
 
-    $nome_usuario = $_SESSION["nome_usuario"];
+    if(isset($_SESSION["email_temp"])){
 
-    if($_SESSION["nome_usuario"] === null){
+        $email_temp = $_SESSION["email_temp"];
+
+    }else{
+
+        $email_temp = null;
+    }
+
+
+
+    if(isset($_SESSION["nome_usuario"])){
 
         $nome_usuario = $_SESSION["nome_usuario"];
 
+    }else{
+
+        $nome_usuario = null;
     }
 
     $token = $_SESSION["token_banco"];
 
-    if($nome_usuario == null){
-
-        echo "O nome do usuário está nulo.";
-    }
     if($token == null){
 
         echo "O token do usuário está nulo.";
@@ -43,11 +51,11 @@
 </head>
 <body>
 
-    <?php if($nome_usuario != null): ?>
+    <?php if($email_temp != null): ?>
 
         <?php 
             
-            $busca_usuario = $banco->buscaSQL("*","usuarios_temporarios");
+            $busca_usuario = $banco->buscaSQL("*","usuarios_temporarios", "WHERE", "email = '$email_temp'");
 
             if($busca_usuario && mysqli_num_rows($busca_usuario)){
                 
@@ -65,8 +73,8 @@
             
             echo "<h1> A sua conta foi cadastrada com sucesso!</h1>";
             
-            sleep(8); 
-            
+
+            session_destroy();
             header("Location: login.php");
         
         ?>
@@ -100,6 +108,7 @@
 
                         echo "Senha atualizada com sucesso!";
 
+                        session_destroy();
                         header("Location: login.php");
 
                     }else{

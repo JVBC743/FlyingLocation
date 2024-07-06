@@ -319,8 +319,9 @@
 
                         if($resp){
 
-                             session_destroy();
-                             header("Location: ../index.php");
+                            session_destroy();
+                            header("Location: ../index.php");
+
                          }else{
                              echo "Conta não excluída.";
                          }

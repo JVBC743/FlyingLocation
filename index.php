@@ -11,11 +11,11 @@
 
     $cons2 = $banco->buscaSQL("*", "produtos");
 
-    $pegar_data = $banco->buscaSQL("*", "usuarios_temporarios");
+    $pegar_data1 = $banco->buscaSQL("*", "usuarios_temporarios");
 
-    if(mysqli_num_rows($pegar_data) > 0){  
+    if(mysqli_num_rows($pegar_data1) > 0){  
 
-        while($lin_temp = mysqli_fetch_assoc($pegar_data)){
+        while($lin_temp = mysqli_fetch_assoc($pegar_data1)){
 
             $data_limite = $lin_temp["data_expiracao"];
 
@@ -31,6 +31,30 @@
             }
         }
     }
+
+    $pegar_data2 = $banco->buscaSQL("*", "tokens");
+
+
+    if(mysqli_num_rows($pegar_data2) > 0){  
+
+        while($lin_temp = mysqli_fetch_assoc($pegar_data2)){
+
+            $data_limite = $lin_temp["data_expiracao"];
+
+            $data_atual = new DateTime();
+        
+            $data_expiracao = new DateTime($data_limite);
+
+            if($data_atual > $data_expiracao){
+
+                $data_expiracao_formatada = $data_expiracao->format('Y-m-d H:i:s');
+
+                $apagar_temp = $banco->excluirDados("tokens", "WHERE", "'$data_expiracao_formatada' < NOW()");
+            }
+        }
+    }
+
+
 
 ?>
 <!DOCTYPE html>

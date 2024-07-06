@@ -63,8 +63,9 @@
                     if($senha_usuario == $senha_armazenada){
 
                     $_SESSION["email"] = $email;
-                    
+
                     header("Location: ../TelaLoja/loja.php");
+
 
                     exit();
                     }else{

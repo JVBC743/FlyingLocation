@@ -5,10 +5,15 @@
     
     require '../email/vendor/autoload.php';
     require("../Adaptador/BDAcesso.php");// Dessa forma está correta.
+    require("../classes/Email.php");
     use padroes_projeto\Adaptador\BDAcesso;
     use PHPMailer\PHPMailer\PHPMailer;
+    use email\Email;
 
-    $mail = new PHPMailer(true);
+    //$mail = new PHPMailer(true);
+
+    $envio_email = new Email();
+
 
     $anonimo = "anonimo.png";
     $caminho = "assets/img/users/";
@@ -81,76 +86,59 @@
 
                                 $numero_casa = $_POST["numeracao_casa"];
 
-                                if (preg_match('/^\d{8}$/', $cep_cadastro)) {
+                                //echo "<script>window.alert('Cheguei aqui1')</script>";
 
-                                $token = uniqid();
+
+                            if (preg_match('/^\d{8}$/', $cep_cadastro)) {
 
                                 $inserir_usr = $banco->inserirDados("usuarios_temporarios", "'$nome_cadastro', '$senha_cadastro', '$cep_cadastro', '$numero_casa', '$email', NOW() + INTERVAL 1 HOUR", "nome, senha, cep, numero_casa, email, data_expiracao");
-
+                                
                                 if($inserir_usr == false){
-
-                                    echo "<script>window.alert('Inserção inválida')</script>";
-
-
+                                    
+                                    echo "<script>window.alert('Houve um erro na inserção dos dados no banco temporario')</script>";
+                                
                                 }else{
-                                    
-                                    $data_expiracao = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-                                    $inserir_tok = $banco->inserirDados("tokens", "'$token', '$data_expiracao', '$email'", "valor_token, data_expiracao, email");
+                                    $assunto = "Criação de uma conta no site FlyingLocation";
                                     
-                                    if($inserir_tok == false){
+                                    $conteudo = "Olá, foi solicitado a criação de uma conta no nosso site FlyingLocation.<br> 
+                                    Caso não tenha solicitado nenhuma abertuda de conta no nosso site, você pode ignorar este e-mail.
+                                    Para criar a sua conta, você pode clicar no link a seguir: ";
 
-                                        echo "<script>window.alert('No token, não funfou.')</script>";
+                                    $alt = "Olá, foi solicitado a criação de uma conta no nosso site FlyingLocation.<br> 
+                                    Caso não tenha solicitado nenhuma abertuda de conta no nosso site, você pode ignorar este e-mail.
+                                    Para criar a sua conta, você pode clicar no link a seguir: ";
+
+                                    //echo "<script>window.alert('Cheguei aqui2')</script>";
+
+                                    $envio = $envio_email->emailGenerico($assunto, $conteudo, $alt, $email, "usuario");
+
+                                    //echo "<script>window.alert('Cheguei aqui3')</script>";
+
+                                    if($envio == false){
+
+                                        echo "<script>window.alert('Houve um erro no envio do e-mail')</script>";
 
                                     }else{
 
-
-                                        $mail->isSMTP();
-                                        $mail->Host = 'smtp.office365.com';
-                                        $mail->SMTPAuth = true;
-                                        $mail->SMTPSecure = 'tls';
-                                        $mail->Username = 'flyinglocation2902@outlook.com';
-                                        $mail->Password = 'FlyLoc@2902';
-                                        $mail->Port = 587;
-
-                                        $mail->setFrom('flyinglocation2902@outlook.com', 'JVBC/JCMS Co.');
-                                        $mail->addAddress($email);
-
-                                        $mail->isHTML(true);
-
-                                        $mail->Subject = "Criação de conta - FlyingLocation";
-
-                                        $link_cadastro = 'http://201.2.18.191:2222/FlyingLocation/tela/pegar_token.php?token=' . $token;
-
-                                        $mail->Body = nl2br("Olá, foi solicitado a criação de uma conta no nosso site FlyingLocation.<br> 
-                                        Para criar a sua conta, você pode clicar no link a seguir: <a href = '$link_cadastro'>clique aqui</a><br><br>
-                                        Caso não tenha solicitado nenhuma abertuda de conta no nosso site, você pode ignorar este e-mail.");
-
-                                        $mail->AltBody = nl2br(strip_tags("Criação de Conta."));
-
-                                            if(!$mail->send()) {
-                                                echo 'Não foi possível enviar a mensagem.';
-                                                echo 'Erro: ' . $mail->ErrorInfo;
-                                            } else {
-                                                echo "E-mail enviado com sucesso!!!<br>";
-                                            }
-
-                                        echo "<script>>window.alert('E-mail enviado com sucesso!')</script>";
-
-
                                         $_SESSION["aviso"] = true;
                                         header("Location: ../index.php");
-                                    }
-                                }
 
+                                    }
+                                }   
+                            
                             }else{
 
-                                echo "Numeração inválida ou não inserida";
-                                echo "<script>window.alert('Numeração inválida ou não inserida')</script>";
+                                echo "<script>window.alert('É o bengas?')</script>";
+
                             }
+
+                        }else{
+
+                            echo "Numeração inválida ou não inserida";
+                            echo "<script>window.alert('Numeração inválida ou não inserida')</script>";
                         }
                         
-
                     }else{
                         echo "CEP inválido";
                         echo "<script>window.alert('CEP inválido')</script>";
@@ -174,4 +162,5 @@
 
         }
     }
+    
 ?>

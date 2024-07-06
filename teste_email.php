@@ -61,7 +61,7 @@
                             $destino = $_POST["destino"];
                             $alt = $_POST["alt"];
 
-                            $envio = $email->enviarEmail($assunto, $conteudo, $destino, $alt);
+                            $envio = $email->emailGenerico($assunto, $conteudo, $destino, $alt, "usuario");
 
                             if($envio == false){
 

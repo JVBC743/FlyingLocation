@@ -39,11 +39,31 @@
 
             $email = $linha_token["email"];
 
-            $id_usuario = $linha_token["id_usuario"];
+            if($email == null){
 
-            $_SESSION["token_banco"] = $token_vindo_busca;
+                $id_usuario = $linha_token["id_usuario"];
 
-            $token_sessao = $_SESSION["token_banco"];
+                $_SESSION["token_banco"] = $token_vindo_busca;
+                $token_sessao = $_SESSION["token_banco"];
+
+            }else{
+
+                $busca_email = $banco_rec->buscaSQL("*", "usuarios_temporarios", "WHERE", "email = '$email'");
+
+                if($busca_email && mysqli_num_rows($busca_email)){
+
+                    $linha_email = mysqli_fetch_assoc($busca_email);
+                    
+                    $email = $linha_email["email"];
+
+                    $_SESSION["email_temp"] = $email;
+
+                    echo "Cheguei aqui 1";
+                    //sleep(10);
+
+                    header("Location: tela_recuperacao.php");
+                }
+            }
 
             echo "Token vindo da busca no banco foi um sucesso!";
 
@@ -54,40 +74,35 @@
         }
     }
 
-    $busca_email = $banco_rec->buscaSQL("*", "usuarios_temporarios", "WHERE", "email = '$email'");
+    if($id_usuario != null){
 
-    if($busca_email && mysqli_num_rows($busca_email)){
-        $linha_email = mysqli_fetch_assoc($busca_email);
-        
-        $nome_usuario = $linha_email["nome"];
+        $busca_usuario = $banco_rec->buscaSQL("*", "usuarios", "WHERE", "id = $id_usuario");
 
-        $_SESSION["nome_usuario"] = $nome_usuario;
-        header("Location: tela_recuperacao.php");
-    }
+        if($busca_usuario && mysqli_num_rows($busca_usuario) > 0){
 
-    $busca_usuario = $banco_rec->buscaSQL("*", "usuarios", "WHERE", "id = $id_usuario");
+            $linha_usr = mysqli_fetch_assoc($busca_usuario);
 
-    if($busca_usuario && mysqli_num_rows($busca_usuario) > 0){
+            $nome_usuario = $linha_usr["nome"];
 
-        $linha_usr = mysqli_fetch_assoc($busca_usuario);
+            $_SESSION["nome_usuario"] = $nome_usuario;
 
-        $nome_usuario = $linha_usr["nome"];
+            $nome_usuario_session = $_SESSION["nome_usuario"];
 
-        $_SESSION["nome_usuario"] = $nome_usuario;
+            echo "O session do nome do usuario foi passado";
 
-        $nome_usuario_session = $_SESSION["nome_usuario"];
+        }else{
 
-        echo "O session do nome do usuario foi passado";
+            echo "Busca do id mal sucedida";
 
-    }else{
+        }
 
-        echo "Busca do id mal sucedida";
 
     }
-    // echo "<br><br>" .$nome_usuario_session . "<br>";
-    // echo $token_sessao;
 
     if($nome_usuario_session != null && $token_sessao != null){
+
+        echo "Cheguei aqui 2";
+        //sleep(10);
 
         header("Location: tela_recuperacao.php");
 
