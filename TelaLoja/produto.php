@@ -53,6 +53,8 @@
             $cadastrador = $linha["cadastrador"];
             $fornecedor = $linha["fornecedor"];
             $garantia = $linha["garantia"];
+            $estoque = $linha["quantidade"];
+
             
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
@@ -164,7 +166,7 @@
             break;
     }
 
-    echo $estado;
+    //echo $estado;
 
     if (isset($_POST["confirmar_compra"])) {
 
@@ -371,6 +373,8 @@
 
         <p style = "margin: 30px"> <?php echo "Contato do cadastrador: " . $contato_cadastrador; ?></p>
 
+        <p style = "margin: 30px"><?php echo "Quantidade disponível: " . $estoque . " unidades"; ?></p>
+
 
         <form action = "produto.php" method="post">
 
@@ -395,6 +399,9 @@
 
                 <label for="numero">Número da casa:</label>
                 <input type="text" id="numero" name="numero" value="<?php echo htmlspecialchars($casa); ?>">
+
+                <label for="estado">Estado:</label>
+                <input type="text" id="estado" name="estado" value="<?php echo htmlspecialchars($estado); ?>">
                 <button type="button" onclick="geocode()">Mostrar no mapa</button>
             </div>
             <input type="submit" name="confirmar_compra" value="Confirmar Compra">
@@ -427,7 +434,9 @@
             function geocode() {
                 var street = document.getElementById('rua').value;
                 var number = document.getElementById('numero').value;
-                var queryString = street + ' ' + number + ', Brasil';
+                var state = document.getElementById('estado').value;
+
+                var queryString = street + ' ' + number + ' ' + state + ', Brasil';
 
                 var geocodingParams = {
                     q: queryString

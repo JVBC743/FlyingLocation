@@ -6,6 +6,24 @@
     use padroes_projeto\Adaptador\BDAcesso;
     $banco = BDAcesso::getInstance();
 
+    if(isset($_SESSION["nome_usuario"])){
+        $nome_usuario = $_SESSION["nome_usuario"];
+    }
+    else{
+        $nome_usuario = null;
+    }
+
+    $cons = $banco->buscaSQL("*", "usuarios", "WHERE", "nome = '$nome_usuario'");
+
+    if(mysqli_num_rows($cons) > 0){
+        $user_log = mysqli_fetch_assoc($cons);
+        $imagem_pss = $user_log["imagem_pessoa"];
+        $credito = $user_log["credito"];
+        $cargo = $user_log["cargo"];
+
+    }
+    
+
     if(isset($_SESSION["nome_produto"])){
         $nome_produto = $_SESSION["nome_produto"];
         $respostaSQL = $banco->buscaSQL("*", "produtos", "WHERE", "nome_produto = '$nome_produto'");
