@@ -72,6 +72,12 @@
 
                             <?php 
                                     if(isset($_POST["cad_prod"])){
+
+                                        if(isset($_SESSION["editar_usuario"])){
+
+                                            unset($_SESSION["editar_usuario"]);
+    
+                                        }
                                         
                                         $_SESSION["nome_usuario"];                                 
                                         header("Location: ../TelaLoja/cad_geren_prod.php");
@@ -93,6 +99,12 @@
 
                             if(isset($_POST["quiz"])){
 
+                                if(isset($_SESSION["editar_usuario"])){
+
+                                    unset($_SESSION["editar_usuario"]);
+
+                                }
+
                                 header("Location: ../quiz/tela_perguntas.php");
 
                             }
@@ -111,6 +123,12 @@
                         <?php
 
                             if(isset($_POST["lista"])){
+
+                                if(isset($_SESSION["editar_usuario"])){
+
+                                    unset($_SESSION["editar_usuario"]);
+
+                                }
 
                                 header("Location: ../tela/lista_usuarios.php");
 
@@ -152,6 +170,8 @@
                                     header("Location: ../tela/perfil.php");
                                 }
                                 if(isset($_POST["sair"])){
+
+                                    
                                     session_destroy();
                                     header("Location: ../index.php");
                                 }

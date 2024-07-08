@@ -173,7 +173,7 @@ if(mysqli_num_rows($cons) > 0){
         <h4>Insira abaixo os dados do produto que deseja cadastrar</h3>
     </div>
     <div class="center">
-        <form action = "gerenciar_prod.php" method = "post" enctype="multipart/form-data"><!--Tem que colocar o UPDATE no campo da quantidade, para ser dinâmico-->
+        <form action = "cad_geren_prod.php" method = "post" enctype="multipart/form-data"><!--Tem que colocar o UPDATE no campo da quantidade, para ser dinâmico-->
             
             <div class="input-group mb3" id="width-30rem">
                     <span class="input-group-text" id="basic-addon1">Nome</span>

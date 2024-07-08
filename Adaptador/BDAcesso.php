@@ -26,39 +26,38 @@ class BDAcesso{
         return self::$instancia;
     }
 
-    public function buscaSQL($coluna, $tabela, $tipoCondicao = null, $condicao = null){
+    public function buscaSQL($coluna, $tabela, $tipoCondicao = null, $condicao = null, ...$parametros){
 
         if ($tipoCondicao && $condicao) {
             $sql = "SELECT $coluna FROM $tabela $tipoCondicao $condicao";    
-            $res = mysqli_query($this->conexao, $sql);
-            
-            if ($res) {
-
+            $stmt = mysqli_prepare($this->conexao, $sql);
+    
+            if ($stmt) {
+                // Bind dos parâmetros, se houver
+                if (!empty($parametros)) {
+                    mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
+                }
+    
+                mysqli_stmt_execute($stmt);
+                $res = mysqli_stmt_get_result($stmt);
+    
+                mysqli_stmt_close($stmt);
                 return $res;
-
             } else {
-
                 echo "Busca não funcionou: " . mysqli_error($this->conexao);
-
                 return false;
-
             }
             
         } else {
             
             $sql = "SELECT $coluna FROM $tabela;";
-
             $res = mysqli_query($this->conexao, $sql);
-
+    
             if ($res) {
-
                 return $res;
-
             } else {
-
-            echo "Busca não funcionou: " . mysqli_error($this->conexao);
-
-            return false;
+                echo "Busca não funcionou: " . mysqli_error($this->conexao);
+                return false;
             }
         }
     }
@@ -66,56 +65,76 @@ class BDAcesso{
     public function inserirDados($tabela, $valores, $colunas = null){
 
         if($colunas){
-
-            $sql = "INSERT INTO $tabela ($colunas) VALUES($valores)";
-            
-        }else{
-            
-            $sql = "INSERT INTO $tabela VALUES($valores)";
-            
+            // Construção da consulta preparada
+            $sql = "INSERT INTO $tabela ($colunas) VALUES ($valores)";
+        } else {
+            $sql = "INSERT INTO $tabela VALUES ($valores)";
         }
-
-        $res = mysqli_query($this->conexao, $sql);
-
-        if($res){
-
+    
+        $stmt = mysqli_prepare($this->conexao, $sql);
+    
+        if ($stmt) {
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
             return true;
-
-        }else{
-
-            echo "Erro ao inserir dados: ". mysqli_error($this->conexao);
+        } else {
+            echo "Erro ao inserir dados: " . mysqli_error($this->conexao);
             return false;
-
         }
     }
 
-    public function atualizarDados($tabela, $sets, $tipoCondicao, $condicao){
+    public function atualizarDados($tabela, $sets, $tipoCondicao, $condicao, ...$parametros){
 
         $sql = "UPDATE $tabela SET $sets $tipoCondicao $condicao";
-        
-        $res = mysqli_query($this->conexao, $sql);
-
-        if($res){
+    
+        $tipos = ""; // Inicialize uma string vazia para os tipos
+    
+        // Construa a string de tipos com base nos parâmetros passados
+        foreach ($parametros as $parametro) {
+            if (is_int($parametro)) {
+                $tipos .= "i"; // 'i' para inteiros
+            } elseif (is_double($parametro)) {
+                $tipos .= "d"; // 'd' para doubles
+            } elseif (is_string($parametro)) {
+                $tipos .= "s"; // 's' para strings
+            } else {
+                $tipos .= "b"; // 'b' para blobs
+            }
+        }
+    
+        $stmt = mysqli_prepare($this->conexao, $sql);
+    
+        if ($stmt) {
+            // Bind dos parâmetros e tipos
+            if (!empty($parametros)) {
+                mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
+            }
+    
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
             return true;
-        }else{
+        } else {
+            echo "Erro ao atualizar dados: " . mysqli_error($this->conexao);
             return false;
         }
     }
 
-    public function excluirDados($tabela, $tipoCondicao, $condicao){
+    public function excluirDados($tabela, $tipoCondicao, $condicao, ...$parametros){
 
         $sql = "DELETE FROM $tabela $tipoCondicao $condicao";
-
-        $res = mysqli_query($this->conexao, $sql);
-
-        if($res){
-            
-            return $res;
-        
-        }else{
-
-            echo "Ocorreu um erro ao excluir o dado.";
+    
+        $stmt = mysqli_prepare($this->conexao, $sql);
+    
+        if ($stmt) {
+            // Bind dos parâmetros
+            mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
+    
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+            return true;
+        } else {
+            echo "Erro ao excluir dados: " . mysqli_error($this->conexao);
+            return false;
         }
-
     }
 }

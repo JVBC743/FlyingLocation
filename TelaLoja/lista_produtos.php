@@ -205,7 +205,7 @@
 
             <h1>Quer cadastrar um produto? Torne-se um fornecedor!</h1><br>
 
-            <form action = "editar_prod.php" method = "post">
+            <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                 <input type = "submit" name  = "tornar_fornecedor" value = "Clique aqui!">
             </form>
 
@@ -215,7 +215,7 @@
 
                     $alt_cargo = $banco->atualizarDados("usuarios", "cargo = 'fornecedor'", "WHERE", "nome = '$nome_usuario'");
                     sleep(3);
-                    header("Location: editar_prod.php");
+                    header("Location: produto_edit.php");
                 }
             ?>
             
@@ -293,7 +293,7 @@
                             </dialog>
 
                             <dialog id="delModal<?php echo $i;?>">
-                                <form action = "editar_prod.php" method = "post">
+                                <form action = "<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
                                     <?php echo $i;?>
                                     <h4>Tem a plena CERTEZA de que quer excluir este produto? (Essa ação não pode ser desfeita)</h4>
                                     <input type = "submit" class="btn btn-danger" name = "excluir_ctz_<?php echo $i; ?>" value = "Excluir Mesmo!">

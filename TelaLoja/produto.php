@@ -58,21 +58,23 @@
             
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
+
+            $cont_cadastrador = $banco->buscaSQL("email", "usuarios", "WHERE", "nome = '$cadastrador'");
+
+        if($cont_cadastrador && mysqli_num_rows($cont_cadastrador) > 0){
+
+            $linha1 = mysqli_fetch_assoc($cont_cadastrador);
+
+            $contato_cadastrador = $linha1["email"];
+
+
+        }
             
 
         }
     }
 
-    $cont_cadastrador = $banco->buscaSQL("email", "usuarios", "WHERE", "nome = '$cadastrador'");
-
-    if($cont_cadastrador && mysqli_num_rows($cont_cadastrador) > 0){
-
-        $linha1 = mysqli_fetch_assoc($cont_cadastrador);
-
-        $contato_cadastrador = $linha1["email"];
-
-
-    }
+    
 
     $cep_teste->lerCEP($cep_pessoa);
     $cep_teste->adaptarJson($cliente);
