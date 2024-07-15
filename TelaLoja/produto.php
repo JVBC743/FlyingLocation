@@ -50,7 +50,18 @@
             $linha = mysqli_fetch_assoc($resul);
             $img_prod = $linha["imagem_produto"];
             $quantidade = $linha["quantidade"];
+
             $cadastrador = $linha["cadastrador"];
+
+            $cont_cadastrador = $banco->buscaSQL("email", "usuarios", "WHERE", "nome = '$cadastrador'");
+
+            if($cont_cadastrador && mysqli_num_rows($cont_cadastrador) > 0){
+
+                $lin = mysqli_fetch_assoc($cont_cadastrador);
+
+                $email = $lin["email"];
+            }
+
             $fornecedor = $linha["fornecedor"];
             $garantia = $linha["garantia"];
             $estoque = $linha["quantidade"];
@@ -59,22 +70,10 @@
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
 
-            $cont_cadastrador = $banco->buscaSQL("email", "usuarios", "WHERE", "nome = '$cadastrador'");
 
-        if($cont_cadastrador && mysqli_num_rows($cont_cadastrador) > 0){
-
-            $linha1 = mysqli_fetch_assoc($cont_cadastrador);
-
-            $contato_cadastrador = $linha1["email"];
-
-
-        }
             
-
         }
     }
-
-    
 
     $cep_teste->lerCEP($cep_pessoa);
     $cep_teste->adaptarJson($cliente);
@@ -373,7 +372,9 @@
 
         <p style = "margin: 30px"> <?php echo "Cadastrador: " . $cadastrador; ?></p>
 
-        <p style = "margin: 30px"> <?php echo "Contato do cadastrador: " . $contato_cadastrador; ?></p>
+        <!-- <p style = "margin: 30px"> <?php //echo "Contato do cadastrador: " . //$contato_cadastrador; ?></p> -->
+
+        <p style = "margin: 30px"><?php echo "Contato do cadastrador: " . $email; ?></p>
 
         <p style = "margin: 30px"><?php echo "Quantidade disponível: " . $estoque . " unidades"; ?></p>
 

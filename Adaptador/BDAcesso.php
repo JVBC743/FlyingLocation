@@ -26,39 +26,26 @@ class BDAcesso{
         return self::$instancia;
     }
 
-    public function buscaSQL($coluna, $tabela, $tipoCondicao = null, $condicao = null, ...$parametros){
-
+    public function buscaSQL($coluna, $tabela, $tipoCondicao = null, $condicao = null, ...$parametros) {
         if ($tipoCondicao && $condicao) {
             $sql = "SELECT $coluna FROM $tabela $tipoCondicao $condicao";    
             $stmt = mysqli_prepare($this->conexao, $sql);
-    
             if ($stmt) {
-                // Bind dos parâmetros, se houver
                 if (!empty($parametros)) {
+                    $tipos = str_repeat('s', count($parametros)); // Ajuste se os tipos forem diferentes
                     mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
                 }
-    
                 mysqli_stmt_execute($stmt);
                 $res = mysqli_stmt_get_result($stmt);
-    
                 mysqli_stmt_close($stmt);
                 return $res;
             } else {
                 echo "Busca não funcionou: " . mysqli_error($this->conexao);
                 return false;
             }
-            
         } else {
-            
             $sql = "SELECT $coluna FROM $tabela;";
-            $res = mysqli_query($this->conexao, $sql);
-    
-            if ($res) {
-                return $res;
-            } else {
-                echo "Busca não funcionou: " . mysqli_error($this->conexao);
-                return false;
-            }
+            return mysqli_query($this->conexao, $sql) ?: false;
         }
     }
 
@@ -83,13 +70,9 @@ class BDAcesso{
         }
     }
 
-    public function atualizarDados($tabela, $sets, $tipoCondicao, $condicao, ...$parametros){
-
+    public function atualizarDados($tabela, $sets, $tipoCondicao, $condicao, ...$parametros) {
         $sql = "UPDATE $tabela SET $sets $tipoCondicao $condicao";
-    
-        $tipos = ""; // Inicialize uma string vazia para os tipos
-    
-        // Construa a string de tipos com base nos parâmetros passados
+        $tipos = ""; // Inicializando a string de tipos
         foreach ($parametros as $parametro) {
             if (is_int($parametro)) {
                 $tipos .= "i"; // 'i' para inteiros
@@ -101,15 +84,12 @@ class BDAcesso{
                 $tipos .= "b"; // 'b' para blobs
             }
         }
-    
+        
         $stmt = mysqli_prepare($this->conexao, $sql);
-    
         if ($stmt) {
-            // Bind dos parâmetros e tipos
             if (!empty($parametros)) {
                 mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
             }
-    
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
             return true;
@@ -119,16 +99,25 @@ class BDAcesso{
         }
     }
 
-    public function excluirDados($tabela, $tipoCondicao, $condicao, ...$parametros){
-
+    public function excluirDados($tabela, $tipoCondicao, $condicao, ...$parametros) {
         $sql = "DELETE FROM $tabela $tipoCondicao $condicao";
-    
         $stmt = mysqli_prepare($this->conexao, $sql);
-    
         if ($stmt) {
-            // Bind dos parâmetros
-            mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
-    
+            if (!empty($parametros)) {
+                $tipos = ""; // Inicializando a string de tipos
+                foreach ($parametros as $parametro) {
+                    if (is_int($parametro)) {
+                        $tipos .= "i"; // 'i' para inteiros
+                    } elseif (is_double($parametro)) {
+                        $tipos .= "d"; // 'd' para doubles
+                    } elseif (is_string($parametro)) {
+                        $tipos .= "s"; // 's' para strings
+                    } else {
+                        $tipos .= "b"; // 'b' para blobs
+                    }
+                }
+                mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
+            }
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
             return true;
