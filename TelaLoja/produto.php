@@ -36,6 +36,7 @@
         $casa = $linha["numero_casa"];
         $cargo = $linha["cargo"];
         $credito = $linha["credito"];
+        $imagem_pss = $linha["imagem_pessoa"];
 
     }
 
@@ -167,32 +168,95 @@
             break;
     }
 
-    //echo $estado;
+
+    $quant_total_prod = $banco->buscaSQL("quantidade", "produtos", "WHERE", "nome_produto = '$nome_produto'");
+
+    if($quant_total_prod && mysqli_num_rows($quant_total_prod) > 0){
+
+        $ln_prod = mysqli_fetch_assoc($quant_total_prod);
+        $quant_tot = $ln_prod["quantidade"];
+
+    }else{
+
+        echo "<script>window.alert('erro na consulta ')</script>";
+
+    }
 
     if (isset($_POST["confirmar_compra"])) {
 
-        if($credito < $prod_preco){
-
+        echo "<script>console.log('Crédito: $credito, Preço do produto: $prod_preco');</script>";
+    
+        if ($credito < $prod_preco) {
             echo "<script>window.alert('Você não tem grana para isso.')</script>";
+        } elseif (isset($_POST["numero"]) && !empty($_POST["numero"]) && isset($_POST["rua"]) && !empty($_POST["rua"])) {
+    
+            if (isset($_POST["quantia"])) {
+                $quantia = $_POST["quantia"];
+                echo "<script>console.log('Quantidade desejada: $quantia');</script>";
+    
+                $quant_total_prod = $banco->buscaSQL("quantidade", "produtos", "WHERE", "nome_produto = '$nome_produto'");
+    
+                if ($quant_total_prod && mysqli_num_rows($quant_total_prod) > 0) {
+                    $ln_prod = mysqli_fetch_assoc($quant_total_prod);
+                    $quant_tot = $ln_prod["quantidade"];
+                    echo "<script>console.log('Quantidade total do produto: $quant_tot');</script>";
+                } else {
+                    echo "<script>window.alert('Produto não encontrado ou sem estoque.')</script>";
+                    exit();
+                }
+    
+                if ($quantia <= $quant_tot) {
 
-        }elseif(isset($_POST["numero"]) && !empty($_POST["numero"]) && isset($_POST["rua"]) && !empty($_POST["rua"])) {
+                    $preco_multiplicado = $quantia * $prod_preco;
 
-            $subtracao = $credito - $prod_preco;
-            $quantidade--;
+                    if($preco_multiplicado > $credito){
 
-            $banco->atualizarDados("produtos", "quantidade = $quantidade", "WHERE", "nome_produto = '$nome_produto'");
 
-            $banco->atualizarDados("usuarios","credito = $subtracao", "WHERE", "nome = '$nome_usuario'");
+                        echo "<script>window.alert('Preço maior do que o crédito.')</script>";
 
-            $_SESSION["numero_pessoa"] = $_POST["numero"];
-            $_SESSION["rua_pessoa"] = $_POST["rua"];
+                        header("Location: produto.php");
 
-            header("Location: confirmacao.php");
 
-            exit(); 
-
+                    }
+                    $subtracao = $credito - $preco_multiplicado;
+                    $quantidade = $quant_tot - $quantia;
+    
+                    echo "<script>window.alert('Cheguei aqui 1')</script>";
+    
+                    $update_prod = $banco->atualizarDados("produtos", "quantidade = $quantidade", "WHERE", "nome_produto = '$nome_produto'");
+                    if ($update_prod) {
+                        echo "<script>console.log('Quantidade do produto atualizada com sucesso');</script>";
+                    } else {
+                        echo "<script>window.alert('Erro ao atualizar a quantidade do produto.')</script>";
+                        exit();
+                    }
+    
+                    echo "<script>window.alert('Cheguei aqui 2')</script>";
+    
+                    $update_user = $banco->atualizarDados("usuarios", "credito = $subtracao", "WHERE", "nome = '$nome_usuario'");
+                    if ($update_user) {
+                        echo "<script>console.log('Crédito do usuário atualizado com sucesso');</script>";
+                    } else {
+                        echo "<script>window.alert('Erro ao atualizar o crédito do usuário.')</script>";
+                        exit();
+                    }
+    
+    
+                    $_SESSION["numero_pessoa"] = $_POST["numero"];
+                    $_SESSION["rua_pessoa"] = $_POST["rua"];
+    
+                    echo "<script>window.alert('Cheguei aqui 4')</script>";
+    
+                    header("Location: confirmacao.php");
+                    exit();
+                } else {
+                    echo "<script>window.alert('Quantidade maior do que o estoque disponível')</script>";
+                }
+            } else {
+                echo "<script>window.alert('Quantidade desejada não foi recebida.')</script>";
+            }
         } else {
-            echo "Rua ou número não definidos.";
+            echo "<script>window.alert('Rua ou número não definidos.')</script>";
         }
     }
 
@@ -378,14 +442,13 @@
 
         <p style = "margin: 30px"><?php echo "Quantidade disponível: " . $estoque . " unidades"; ?></p>
 
+        <form action="<?php $_SERVER["PHP_SELF"]; ?>" method = "post">
 
-        <form action = "produto.php" method="post">
-
-            <input type = "submit" name = "comprar", value = "Comprar" >
+            <input type="submit" name = "comprar" value = "Comprar">
 
         </form>
 
-
+    
         <?php if (isset($_POST["comprar"])): ?>
 
         <h3>O produto será entregue no endereço:</h3>
@@ -406,7 +469,12 @@
                 <label for="estado">Estado:</label>
                 <input type="text" id="estado" name="estado" value="<?php echo htmlspecialchars($estado); ?>">
                 <button type="button" onclick="geocode()">Mostrar no mapa</button>
-            </div>
+            </div><br>
+
+            <label>Quantidade desejada:</label>
+
+            <input type = "number" style = "margin: 30px" name = "quantia">
+
             <input type="submit" name="confirmar_compra" value="Confirmar Compra">
         </form>
 
@@ -478,6 +546,8 @@
         <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
         <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
         <script src="../assets/js/modals.js"></script>
+
+
 
     <?php endif; ?>
 

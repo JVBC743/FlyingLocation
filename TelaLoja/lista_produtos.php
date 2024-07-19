@@ -19,42 +19,12 @@
     
     if(mysqli_num_rows($cons) > 0){
 
-        $user_log = mysqli_fetch_assoc($cons);
-        $imagem_pss = $user_log["imagem_pessoa"];
-        $credito = $user_log["credito"];
-
-    }
-    
-
-    $busca_cargo = $banco->buscaSQL("cargo", "usuarios", "WHERE", "nome = '$nome_usuario'");
-    
-    $consulta = $banco->buscaSQL("*","produtos", "WHERE" , "fornecedor = '$nome_usuario'");
-
-    if($consulta && mysqli_num_rows($consulta) > 0){
-
-        $linha = mysqli_fetch_assoc($consulta);
-
-        // $usr_prod = $linha["fornecedor"];
-
-        // echo "Fornecedor encontrado";
-
-    }else{
-
-        // echo "Fornecedor não encontrado.";
-
-    }
-
-    if($busca_cargo && mysqli_num_rows($busca_cargo) > 0 ){
-
-        $linha = mysqli_fetch_assoc($busca_cargo);
-
+        $linha = mysqli_fetch_assoc($cons);
+        $imagem_pss = $linha["imagem_pessoa"];
+        $credito = $linha["credito"];
         $cargo = $linha["cargo"];
-
-    }else{
-
-        echo "Cargo não encontrado.";
-
     }
+    
 ?>
 
 <!DOCTYPE html>
@@ -214,8 +184,7 @@
                 if(isset($_POST["tornar_fornecedor"])){
 
                     $alt_cargo = $banco->atualizarDados("usuarios", "cargo = 'fornecedor'", "WHERE", "nome = '$nome_usuario'");
-                    sleep(3);
-                    header("Location: produto_edit.php");
+                    header("Location: lista_produtos.php");
                 }
             ?>
             
@@ -237,28 +206,31 @@
                 <tbody>
                 <?php 
 
-                    if($cargo == "fornecedor"){
-
-                        $consulta = $banco->buscaSQL("*","produtos", "WHERE", "fornecedor = '$nome_usuario'");
+                    if($cargo === "fornecedor"){
                         
-                    }elseif($cargo == "administrador"){
+                        $consulta = $banco->buscaSQL("*", "produtos", "WHERE", "cadastrador = '$nome_usuario'");
+                        
+                    }elseif($cargo === "administrador"){
+
+                        echo "Administrador";
 
                         $consulta = $banco->buscaSQL("*","produtos");
 
-                    }     
+                    }
                         $i = 0;
 
-                        while ($linha = mysqli_fetch_assoc($consulta)){
 
-                            $id = $linha["id_produto"];
-                            $nome = $linha["nome_produto"];
-                            $preco = $linha["preco"];
-                            $quant = $linha["quantidade"];
-                            $data = $linha["fabricacao"];
-                            $garantia = $linha["garantia"];
-                            $desc = $linha["descricao"];
-                            $img = $linha["imagem_produto"];
-                            $fornecedor = $linha["fornecedor"];
+                        while ($linha1 = mysqli_fetch_assoc($consulta)){
+
+                            $id = $linha1["id_produto"];
+                            $nome = $linha1["nome_produto"];
+                            $preco = $linha1["preco"];
+                            $quant = $linha1["quantidade"];
+                            $data = $linha1["fabricacao"];
+                            $garantia = $linha1["garantia"];
+                            $desc = $linha1["descricao"];
+                            $img = $linha1["imagem_produto"];
+                            $fornecedor = $linha1["fornecedor"];
                 ?>
                             <tr>
                                 <th scope="row"><?php echo $id; ?></th>
@@ -284,9 +256,12 @@
                                         </form>
 
                                         <button type="button" id="abrirModal<?php echo $i;?>" >Ver Imagem</button>
+
+
                                     </div>
                                 </td>
                             </tr>
+
                             <dialog id="modal<?php echo $i;?>">
                                 <img src="../users/img/products/<?php echo $img ?>" alt="img">
                                 <button type="button" id="fecharModal<?php echo $i;?>" >Fechar</button>
