@@ -108,3 +108,9 @@ body::before {
     width: 30rem;
     height: 15rem;
 }
+
+#teste{
+
+    color: rgb(35, 76, 68);
+    color: rgb(141, 141, 0)
+}

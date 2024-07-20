@@ -192,8 +192,10 @@
         } elseif (isset($_POST["numero"]) && !empty($_POST["numero"]) && isset($_POST["rua"]) && !empty($_POST["rua"])) {
     
             if (isset($_POST["quantia"])) {
+                
                 $quantia = $_POST["quantia"];
-                echo "<script>console.log('Quantidade desejada: $quantia');</script>";
+
+              
     
                 $quant_total_prod = $banco->buscaSQL("quantidade", "produtos", "WHERE", "nome_produto = '$nome_produto'");
     
@@ -204,6 +206,17 @@
                 } else {
                     echo "<script>window.alert('Produto não encontrado ou sem estoque.')</script>";
                     exit();
+                }
+
+                if(empty($quantia)){
+
+                    sleep(5);
+
+                    $_SESSION["erro"] = "Especifique a quantidade";
+                    header("Location: produto.php");
+                    echo "<script>window.alert('Especifique a quantidade desejada.')</script>";
+
+
                 }
     
                 if ($quantia <= $quant_tot) {
@@ -242,11 +255,18 @@
                         exit();
                     }
     
-    
                     $_SESSION["numero_pessoa"] = $_POST["numero"];
                     $_SESSION["rua_pessoa"] = $_POST["rua"];
                     $_SESSION["estado"] =  $estado;
                     $_SESSION["cidade"] = $cidade;
+
+                    
+                    $_SESSION["cadastrador"] = $cadastrador;
+                    $_SESSION["quantia"] = $quantia;
+                    $_SESSION["contato_cadastrador"] = $email;
+                    $_SESSION["fornecedor"] = $fornecedor;
+                    $_SESSION["preco"] = $prod_preco;
+                    
 
     
                     echo "<script>window.alert('Cheguei aqui 4')</script>";
@@ -427,124 +447,165 @@
         </nav>
 
 <!-- ============================================================NAV BAR=================================================================================== -->
+        <div class="prod_info d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column align-items-center">
+                <h1 style = "margin: 20px; "><?php echo $prod_nome; ?></h1>
+                <img src="../assets/img/products/<?php echo $img_prod; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
+                <form action="<?php $_SERVER["PHP_SELF"]; ?>" method = "post">
+                    <input class="btn btn-primary" type="submit" name = "comprar" value = "Comprar">
+                </form>
+            </div>
+            <div class="d-flex flex-column">
+                <p class="border border-primary" style = "margin: 30px"><?php echo "Preço: R$" . $prod_preco; ?></p>
+        
+                <p style = "margin: 30px" class="border border-primary"> <?php echo "Garantia: " . $garantia . " dias."; ?></p>
+                <!-- adicionar garantia em formato de ano, mes, dias. -->
+        
+        
+                <p style = "margin: 30px" class="border border-primary"> <?php echo "Fornecedor(a): " . $fornecedor; ?></p>
+        
+                <p style = "margin: 30px" class="border border-primary"> <?php echo "Cadastrador: " . $cadastrador; ?></p>
+        
+                <!-- <p style = "margin: 30px"> <?php //echo "Contato do cadastrador: " . //$contato_cadastrador; ?></p> -->
+        
+                <p style = "margin: 30px" class="border border-primary"><?php echo "Contato do cadastrador: " . $email; ?></p>
+        
+                <p style = "margin: 30px" class="border border-primary"><?php echo "Quantidade disponível: " . $estoque . " unidades"; ?></p>
+                
+                <?php 
 
-        <h1 style = "margin: 20px; "><?php echo $prod_nome; ?></h1>
-        <img src="../assets/img/products/<?php echo $img_prod; ?>" style = "margin: 20px; border-style: solid; height: 200px; width: 200px;">
-        <p style = "margin: 30px"><?php echo "Preço: R$" . $prod_preco; ?></p>
+                if(isset($_SESSION['erro'])){
+                
+                    echo "<script> window.alert('Especifique a quantidade')</script>";
 
-        <p style = "margin: 30px"> <?php echo "Garantia: " . $garantia . " dias."; ?></p>
-        <!-- adicionar garantia em formato de ano, mes, dias. -->
+                    unset($_SESSION["erro"]);
 
-
-        <p style = "margin: 30px"> <?php echo "Fornecedor(a): " . $fornecedor; ?></p>
-
-        <p style = "margin: 30px"> <?php echo "Cadastrador: " . $cadastrador; ?></p>
-
-        <!-- <p style = "margin: 30px"> <?php //echo "Contato do cadastrador: " . //$contato_cadastrador; ?></p> -->
-
-        <p style = "margin: 30px"><?php echo "Contato do cadastrador: " . $email; ?></p>
-
-        <p style = "margin: 30px"><?php echo "Quantidade disponível: " . $estoque . " unidades"; ?></p>
-
-        <form action="<?php $_SERVER["PHP_SELF"]; ?>" method = "post">
-
-            <input type="submit" name = "comprar" value = "Comprar">
-
-        </form>
+                }
+                
+                
+                ?>
+            </div>
+        </div>
 
     
         <?php if (isset($_POST["comprar"])): ?>
+        
+            <div class="container text-center">
+                <div class="row align-items-start">
+                    <div class="col">
+                        <h3>O produto será entregue no endereço:</h3>
+                        <br>
+                        <h3>N° da residência: <?php echo htmlspecialchars($casa); ?></h3>
+                        <h5><?php echo htmlspecialchars($cliente->logradouro); ?></h5>
+                    </div>
+                    <div class="col">
+                        <form id="addressForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <div id="formContainer">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="">Rua:</span>
+                                    <input type="text" class="form-control" id="rua" name="rua" value="<?php echo htmlspecialchars($logradouro); ?>">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="">Número da casa:</span>
+                                    <input type="text" class="form-control" id="numero" name="numero" value="<?php echo htmlspecialchars($casa); ?>">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="">Estado:</span>
+                                    <input type="text" class="form-control" id="estado" name="estado" value="<?php echo htmlspecialchars($estado); ?>">
+                                </div>
+                                <button type="button" class="btn btn-primary mb-3" onclick="geocode()">Mostrar no mapa</button>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="">Quantidade desejada:</span>
+                                    <input type = "number" class="form-control" name = "quantia">
+                                </div>
+                                <input type="submit" class="btn btn-primary" name="confirmar_compra" value="Confirmar Compra">
+                            </div>                           
 
-        <h3>O produto será entregue no endereço:</h3>
-        <br>
-        <h3>N° da residência: <?php echo htmlspecialchars($casa); ?></h3>
-        <h5><?php echo htmlspecialchars($cliente->logradouro); ?></h5>
-        <br>
-        <h4>Olhe no mapa e verifique se o endereço está correto. Se não estiver, você pode alterar o valor do endereço nos campos.</h4>
+                        </form>
+                        
+                    </div>
+                </div>
+                <h4>Olhe no mapa e verifique se o endereço está correto. Se não estiver, você pode alterar o valor do endereço nos campos.</h4>
+                    <div id="mapContainer" class="mx-auto">
+                        <script>
+                            var platform = new H.service.Platform({
+                                'apikey': 'Z7sBZtFTTAwvzbsIAviUxi5KHr4sFrprGz1QayKVhrE',
+                                'useHTTPS': true,
+                                'lang': 'pt-BR'
+                            });
 
-        <form id="addressForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div id="formContainer">
-                <label for="rua">Rua:</label>
-                <input type="text" id="rua" name="rua" value="<?php echo htmlspecialchars($logradouro); ?>">
+                            var maptypes = platform.createDefaultLayers();
 
-                <label for="numero">Número da casa:</label>
-                <input type="text" id="numero" name="numero" value="<?php echo htmlspecialchars($casa); ?>">
+                            var map = new H.Map(
+                                document.getElementById('mapContainer'),
+                                maptypes.vector.normal.map, {
+                                    zoom: 20,
+                                    center: {
+                                        lng: -47.9292,
+                                        lat: -15.7801
+                                    }
+                                });
 
-                <label for="estado">Estado:</label>
-                <input type="text" id="estado" name="estado" value="<?php echo htmlspecialchars($estado); ?>">
-                <button type="button" onclick="geocode()">Mostrar no mapa</button>
-            </div><br>
+                            var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
-            <label>Quantidade desejada:</label>
+                            var ui = H.ui.UI.createDefault(map, maptypes);
 
-            <input type = "number" style = "margin: 30px" name = "quantia">
+                            function geocode() {
+                                var street = document.getElementById('rua').value;
+                                var number = document.getElementById('numero').value;
+                                var state = document.getElementById('estado').value;
 
-            <input type="submit" name="confirmar_compra" value="Confirmar Compra">
-        </form>
+                                var queryString = street + ' ' + number + ' ' + state + ', Brasil';
 
-        <div id="mapContainer" style="margin-right: 20px;"></div>
-        <script>
-            var platform = new H.service.Platform({
-                'apikey': 'Z7sBZtFTTAwvzbsIAviUxi5KHr4sFrprGz1QayKVhrE',
-                'useHTTPS': true,
-                'lang': 'pt-BR'
-            });
+                                var geocodingParams = {
+                                    q: queryString
+                                };
 
-            var maptypes = platform.createDefaultLayers();
+                                var geocoder = platform.getSearchService();
 
-            var map = new H.Map(
-                document.getElementById('mapContainer'),
-                maptypes.vector.normal.map, {
-                    zoom: 20,
-                    center: {
-                        lng: -47.9292,
-                        lat: -15.7801
-                    }
-                });
+                                geocoder.geocode(geocodingParams, onResult, function (e) {
+                                    alert('Erro na geocodificação: ' + e);
+                                });
+                            }
 
-            var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                            function onResult(result) {
+                                var locations = result.items;
+                                if (locations.length > 0) {
+                                    var position = locations[0].position;
+                                    var lat = position.lat;
+                                    var lng = position.lng;
 
-            var ui = H.ui.UI.createDefault(map, maptypes);
+                                    map.setCenter({
+                                        lat: lat,
+                                        lng: lng
+                                    });
+                                    var marker = new H.map.Marker({
+                                        lat: lat,
+                                        lng: lng
+                                    });
+                                    map.addObject(marker);
+                                } else {
+                                    alert('Nenhuma localização encontrada.');
+                                }
+                            }
+                        </script>
+                    </div>
+            </div>
 
-            function geocode() {
-                var street = document.getElementById('rua').value;
-                var number = document.getElementById('numero').value;
-                var state = document.getElementById('estado').value;
 
-                var queryString = street + ' ' + number + ' ' + state + ', Brasil';
 
-                var geocodingParams = {
-                    q: queryString
-                };
+            <!-- <div class="prod_info d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-column align-items-center">
+                    
+                    <div class="d-flex flex-row">
+                        
+                    </div>
+                    
+                </div> -->
 
-                var geocoder = platform.getSearchService();
+                
 
-                geocoder.geocode(geocodingParams, onResult, function (e) {
-                    alert('Erro na geocodificação: ' + e);
-                });
-            }
-
-            function onResult(result) {
-                var locations = result.items;
-                if (locations.length > 0) {
-                    var position = locations[0].position;
-                    var lat = position.lat;
-                    var lng = position.lng;
-
-                    map.setCenter({
-                        lat: lat,
-                        lng: lng
-                    });
-                    var marker = new H.map.Marker({
-                        lat: lat,
-                        lng: lng
-                    });
-                    map.addObject(marker);
-                } else {
-                    alert('Nenhuma localização encontrada.');
-                }
-            }
-        </script>
+                
         <?php endif; ?>
         
         <script src="../assets/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
@@ -557,4 +618,3 @@
 
 </body>
 </html>
-

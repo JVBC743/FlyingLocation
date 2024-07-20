@@ -230,11 +230,12 @@ function exibirprodutos($consultaSQL)
 
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-
-        <form action="loja.php" method="GET">
-            <input type="text" name="termo_pesquisa" placeholder="Pesquise sobre os produtos" value="<?php echo isset($_GET['termo_pesquisa']) ? htmlspecialchars($_GET['termo_pesquisa']) : ''; ?>">
-            <button type="submit">Pesquisar</button>
-        </form>
+        <div class="d-flex flex-column align-items-end">
+            <form action="loja.php" method="GET">
+                <input type="text" name="termo_pesquisa" placeholder="Pesquise sobre os produtos" value="<?php echo isset($_GET['termo_pesquisa']) ? htmlspecialchars($_GET['termo_pesquisa']) : ''; ?>">
+                <button type="submit">Pesquisar</button>
+            </form>
+        </div>
         
         <?php if(isset($_GET['termo_pesquisa']) && !empty($_GET['termo_pesquisa'])): ?>
             <?php

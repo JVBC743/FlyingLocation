@@ -177,62 +177,79 @@
 
             
 
+    <div class="d-flex flex-column align-items-center">
 
-    <h1>Você abriu a tela de cadastro de perguntas.</h1>
+        <h1>Você abriu a tela de cadastro de perguntas.</h1>
+        <form action="cadastro_perguntas.php" method = "POST">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="enunciado">Enunciado da pergunta</span>
+                <input class="form-control" type="text" name = "enunciado" required> 
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="categoria">Categoria</span>
+                <select class="form-select" name="categoria" aria-label="Default select example">
+                    <option value="Matemática">Matemática</option>
+                    <option value="História">História</option>
+                    <option value="Ciência">Ciência</option>
+                    <option value="Geografia">Geografia</option>
+                    <option value="Cultura">Cultura</option>
+                    <option value="Literatura">Literatura</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="alternativa1">Alternativa 1</span>
+                <input class="form-control" type="text" name="alternativa1"required> 
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="alternativa2">Alternativa 2</span>
+                <input class="form-control" type="text" name="alternativa2"required> 
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="alternativa3">Alternativa 3</span>
+                <input class="form-control" type="text" name="alternativa3"required> 
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="alternativa2">Alternativa 4</span>
+                <input class="form-control" type="text" name="alternativa4"required> 
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="pontuacao">Pontuação</span>
+                <input class="form-control" type="text" name = "pontuacao" required> 
+            </div>
+    
+            <h3>Qual das alternativas é a correta?</h3>
+            <div class="d-flex mt-4">
 
-    <form action="cadastro_perguntas.php" method = "POST">
-
-        <label for="enunciado">Enunciado da pergunta</label>
-        <input type="text" name = "enunciado" required> 
-        <br><br>
-        <label for="categoria">Categoria</label>
-        <!-- <input type="text" name="categoria"required>  -->
-
-        <select name="categoria">
-
-            <option value="Matemática">Matemática</option>
-            <option value="História">História</option>
-            <option value="Ciência">Ciência</option>
-            <option value="Geografia">Geografia</option>
-            <option value="Cultura">Cultura</option>
-            <option value="Literatura">Literatura</option>
-
-
-        </select>
-        <br>
-        <label for="alternativa1">Alternativa 1</label>
-        <input type="text" name="alternativa1"required> 
-        <br>
-        <label for="alternativa2">Alternativa 2</label>
-        <input type="text" name="alternativa2" required> 
-        <br>
-        <label for="alternativa3">Alternativa 3</label>
-        <input type="text" name="alternativa3" required>
-        <br>
-        <label for="alternativa4">Alternativa 4</label>
-        <input type="text" name="alternativa4" required>
-        <br><br>
-
-        <label for="pontuacao">Pontuação</label>
-        <input type="text" name = "pontuacao" required> 
-
-        <br><br>
-
-        <h3>Qual das alternativas é a correta?</h3>
-
-        <input type="radio" name="alts" value = "1" required>
-        <label for="alts">1</label><br>
-        <input type="radio" name="alts" value = "2">
-        <label for="alts">2</label><br>
-        <input type="radio" name="alts" value = "3">
-        <label for="alts">3</label><br>
-        <input type="radio" name="alts" value = "4">
-        <label for="alts">4</label><br>
-        <br>
-
-        <input type="submit" name = "botao_cadastro_pergunta">
-
-    </form>
+                <div class="form-check" style="margin-right: 1rem;">
+                    <input type="radio" class="form-check-input" name="alts" value = "1" required>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        1
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right: 1rem;">
+                    <input type="radio" class="form-check-input" name="alts" value = "2" required>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        2
+                    </label>
+                </div>
+                <div class="form-check" style="margin-right: 1rem;">
+                    <input type="radio" class="form-check-input" name="alts" value = "3" required>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        3
+                    </label>
+                </div>
+                <div class="form-check mb-5" >
+                    <input type="radio" class="form-check-input" name="alts" value = "4" required>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        4
+                    </label>
+                </div>
+            </div>
+            
+            <input type="submit" class="btn btn-primary" name = "botao_cadastro_pergunta">
+    
+        </form>
+    </div>
 
     <?php 
 if(isset($_POST["botao_cadastro_pergunta"])){

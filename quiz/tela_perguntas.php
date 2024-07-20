@@ -212,7 +212,7 @@
 
 <!-- ============================================================NAV BAR=================================================================================== -->
 
-    <div class="mb-3" style = "margin: 20px;">
+    <div class="mb-3 mt-5  d-flex flex-column align-items-center">
         <h4><?php 
         
         if(empty($enunciado)){
@@ -224,6 +224,7 @@
             echo $enunciado;
 
         } ?></h4>
+        <div class="d-flex flex-column align-items-start">
 
     <?php
 
@@ -249,7 +250,6 @@
 
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method = "post">
 
-                        
                                 <input class="form-check-input" type="radio" name="alternativa" value="<?php echo $descricao; ?>" >
                                 <label class="form-check-label" for="alternativa_<?php echo $descricao; ?>">
                             
@@ -267,9 +267,11 @@
         }
     ?>
                             <br>
+                            </div>
                             <input type="submit" name = "enviar_pergunta" class="btn btn-success">
 
                         </form>
+                        
     
     <?php
  
