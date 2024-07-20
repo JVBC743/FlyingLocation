@@ -207,7 +207,7 @@
                 <?php 
 
                     if($cargo === "fornecedor"){
-                        
+
                         $consulta = $banco->buscaSQL("*", "produtos", "WHERE", "cadastrador = '$nome_usuario'");
                         
                     }elseif($cargo === "administrador"){
@@ -218,7 +218,6 @@
 
                     }
                         $i = 0;
-
 
                         while ($linha1 = mysqli_fetch_assoc($consulta)){
 
