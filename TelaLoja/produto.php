@@ -80,6 +80,7 @@
     $cep_teste->adaptarJson($cliente);
     $logradouro = $cliente->logradouro;
     $estado = $cliente->uf;
+    $cidade = $cliente->localidade;
 
     switch($estado) {
         case 'AC':
@@ -244,6 +245,9 @@
     
                     $_SESSION["numero_pessoa"] = $_POST["numero"];
                     $_SESSION["rua_pessoa"] = $_POST["rua"];
+                    $_SESSION["estado"] =  $estado;
+                    $_SESSION["cidade"] = $cidade;
+
     
                     echo "<script>window.alert('Cheguei aqui 4')</script>";
     

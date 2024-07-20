@@ -36,6 +36,8 @@
         $rua_pessoa = $_SESSION["rua_pessoa"];
         $prod_nome = $_SESSION["prod_nome"];
         $prod_preco = $_SESSION["prod_preco"];
+        $estado = $_SESSION["estado"];
+        $cidade = $_SESSION["cidade"];
 
         $html = "
         <!DOCTYPE html>
@@ -47,7 +49,14 @@
         </head>
         <body>
             <h1 style = 'color: red; '>A sua compra foi um sucesso!</h1>
-            <h5>O produto $prod_nome será enviado para a $rua_pessoa no n° $numero_pessoa por R$$prod_preco.</h5>
+            <h5>O produto $prod_nome será entregue no endereço:</h5>
+
+            <h4>Estado: $estado</h4>
+            <h4>Cidade: $cidade</h4>
+            <h4>Rua: $rua_pessoa</h4>
+            <h4>N° da casa: $numero_pessoa</h4>
+
+            <h3>Guade essas informações</h3>
             <br>
         </body>
         </html>
@@ -58,5 +67,4 @@
         $dompdf->render();
         $dompdf->stream("comprovante.pdf", ["Attachment" => false]);
 
-    
 ?>
