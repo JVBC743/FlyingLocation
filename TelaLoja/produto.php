@@ -3,6 +3,8 @@
 
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+
 
     require("../Adaptador/BDAcesso.php");
     require("../Adaptador/CepAdaptor.php");
@@ -75,6 +77,17 @@
             
         }
     }
+
+    if(isset($_POST["sair"])){
+
+        
+        session_destroy(); // Destrói a sessão
+
+        header("Location: ../index.php"); // 
+        exit();
+    }
+
+    
 
     $cep_teste->lerCEP($cep_pessoa);
     $cep_teste->adaptarJson($cliente);
@@ -210,8 +223,6 @@
 
                 if(empty($quantia)){
 
-                    sleep(5);
-
                     $_SESSION["erro"] = "Especifique a quantidade";
                     header("Location: produto.php");
                     echo "<script>window.alert('Especifique a quantidade desejada.')</script>";
@@ -254,21 +265,18 @@
                         echo "<script>window.alert('Erro ao atualizar o crédito do usuário.')</script>";
                         exit();
                     }
-    
+                    
                     $_SESSION["numero_pessoa"] = $_POST["numero"];
                     $_SESSION["rua_pessoa"] = $_POST["rua"];
                     $_SESSION["estado"] =  $estado;
                     $_SESSION["cidade"] = $cidade;
 
-                    
                     $_SESSION["cadastrador"] = $cadastrador;
                     $_SESSION["quantia"] = $quantia;
                     $_SESSION["contato_cadastrador"] = $email;
                     $_SESSION["fornecedor"] = $fornecedor;
                     $_SESSION["preco"] = $prod_preco;
                     
-
-    
                     echo "<script>window.alert('Cheguei aqui 4')</script>";
     
                     header("Location: confirmacao.php");
@@ -367,7 +375,6 @@
                             </form>
                         </li>
                         <?php 
-
                             if(isset($_POST["quiz"])){
 
                                 header("Location: ../quiz/tela_perguntas.php");
@@ -415,6 +422,19 @@
                             <ul class="dropdown-menu">
                                 <li class = "nav-link active"><input type = "submit" class="dropdown-item" value = "Perfil" name = "perfil"></li>
                                 <li><input type = "submit" class="dropdown-item" value = "Sair" name = "sair"></li>
+
+                                <?php 
+
+                                if(isset($_POST["sair"])){
+                                    session_start();
+                                    session_unset(); // Limpa todas as variáveis de sessão
+                                    session_destroy(); // Destrói a sessão
+
+                                    header("Location: login.php"); // Redireciona para a página de login
+                                    exit();
+                                                                    }
+
+                                ?>
                           </form>
                             <?php 
                                 if(isset($_POST["perfil"])){
@@ -422,14 +442,15 @@
                                     if(isset($_SESSION["editar_usuario"])){
 
                                         unset($_SESSION["editar_usuario"]);
-
                                     }
 
-                                    $_SESSION["nome_usuario"];
                                     header("Location: ../tela/perfil.php");
+
                                 }
                                 if(isset($_POST["sair"])){
                                     session_destroy();
+                                    session_unset();
+
                                     header("Location: ../index.php");
                                 }
                             ?>

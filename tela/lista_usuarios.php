@@ -234,10 +234,6 @@
                                         <input type="hidden" name="editar_usuario" value="<?php echo $nome; ?>">
                                         <button type="submit" class="btn btn-primary" name="editar_<?php echo $i; ?>">Editar</button>
                                     </form>
-                                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" class="d-inline">
-                                            <input type="hidden" name="apagar_pessoa_<?php echo $i; ?>" value="<?php echo $nome; ?>">
-                                            <button type="button"id="delAbrirModal<?php echo $i;?>" class="btn btn-danger">Apagar</button>
-                                        </form>
 
                                     </div>
                                 </td>
