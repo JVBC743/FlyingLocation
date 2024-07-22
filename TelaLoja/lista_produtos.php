@@ -24,7 +24,10 @@
         $credito = $linha["credito"];
         $cargo = $linha["cargo"];
     }
-    
+    if(isset($_POST["sair"])){
+        session_destroy();
+        header("Location: ../index.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -150,10 +153,7 @@
                                     $_SESSION["nome_usuario"];
                                     header("Location: ../tela/perfil.php");
                                 }
-                                if(isset($_POST["sair"])){
-                                    session_destroy();
-                                    header("Location: ../index.php");
-                                }
+                                
                             ?>
                             </div>
                             </div>
