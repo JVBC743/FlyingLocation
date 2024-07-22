@@ -212,7 +212,6 @@
                         
                     }elseif($cargo === "administrador"){
 
-                        echo "Administrador";
 
                         $consulta = $banco->buscaSQL("*","produtos");
 
@@ -262,7 +261,9 @@
                             </tr>
 
                             <dialog id="modal<?php echo $i;?>">
-                                <img src="../users/img/products/<?php echo $img ?>" alt="img">
+                                <img src="../assets/img/products/<?php echo $img ?>" alt="img"> 
+
+                                <!-- MODAL AQUI -->
                                 <button type="button" id="fecharModal<?php echo $i;?>" >Fechar</button>
                             </dialog>
 
