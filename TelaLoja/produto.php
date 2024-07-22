@@ -73,13 +73,10 @@
             $_SESSION["prod_nome"] = $prod_nome = $linha["nome_produto"];
             $_SESSION["prod_preco"] = $prod_preco = $linha["preco"];
 
-
-            
         }
     }
 
     if(isset($_POST["sair"])){
-
         
         session_destroy(); // Destrói a sessão
 
@@ -275,7 +272,7 @@
                     $_SESSION["quantia"] = $quantia;
                     $_SESSION["contato_cadastrador"] = $email;
                     $_SESSION["fornecedor"] = $fornecedor;
-                    $_SESSION["preco"] = $prod_preco;
+                    $_SESSION["preco"] = $preco_multiplicado;
                     
                     echo "<script>window.alert('Cheguei aqui 4')</script>";
     

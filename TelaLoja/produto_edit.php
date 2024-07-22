@@ -231,7 +231,7 @@
                 <br>
                 <div class="center-item">
                     <input type = "submit" name = "atualizar" value = "Atualizar" class = "btn btn-primary">
-                    <a type="button" class = "btn btn-danger" href = "editar_prod.php">Cancelar</a>
+                    <a type="button" class = "btn btn-danger" href = "loja.php">Cancelar</a>
                 </div>
             </form>
         </div>
