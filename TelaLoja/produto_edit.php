@@ -22,7 +22,6 @@
         $cargo = $user_log["cargo"];
 
     }
-    
 
     if(isset($_SESSION["nome_produto"])){
         $nome_produto = $_SESSION["nome_produto"];

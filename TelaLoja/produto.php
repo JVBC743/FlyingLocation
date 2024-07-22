@@ -262,6 +262,20 @@
                         echo "<script>window.alert('Erro ao atualizar o crédito do usuário.')</script>";
                         exit();
                     }
+
+                    $busca_dinheiro = $banco->buscaSQL("credito", "usuarios", "WHERE", "nome = '$cadastrador'");
+
+                    if($busca_dinheiro && mysqli_num_rows($busca_dinheiro) > 0){
+
+                        $linha_cred = mysqli_fetch_assoc($busca_dinheiro);
+                        $credito_cadastrador = $linha_cred["credito"];
+                    }
+
+                    $soma = $credito_cadastrador + $preco_multiplicado;
+
+                    $update_recebimento = $banco->atualizarDados("usuarios", "credito = $soma", "WHERE", "nome = '$cadastrador'");
+
+                    
                     
                     $_SESSION["numero_pessoa"] = $_POST["numero"];
                     $_SESSION["rua_pessoa"] = $_POST["rua"];
